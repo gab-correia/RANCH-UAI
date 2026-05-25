@@ -93,6 +93,8 @@
       min-height: 38px; display: flex; align-items: center;
     }
     .nav-cta:hover { background: var(--gold-lt); }
+    /* esconde o botão no mobile — o hero já tem CTA grande */
+    @media (max-width: 599px) { .nav-cta { display: none; } }
 
     .hamburger {
       background: none; border: none; cursor: pointer;
