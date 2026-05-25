@@ -20,9 +20,10 @@
       --cream:   #f5f0e8;
       --muted:   #7a7060;
       --border:  #252015;
+      --radius:  12px;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
       background: var(--bg);
@@ -32,323 +33,450 @@
       overflow-x: hidden;
     }
 
-    /* ── NAV ─────────────────────────────────────────────── */
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* ─── NAV ──────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; width: 100%; z-index: 100;
-      background: rgba(10,10,10,0.92);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(10,10,10,0.94);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      padding: 0 2.5rem;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 64px;
+      height: 60px;
+      display: flex; align-items: center;
+      padding: 0 1.25rem;
+      gap: 1rem;
       transition: border-color .3s;
     }
-    .nav-brand { display: flex; align-items: center; gap: .75rem; text-decoration: none; }
-    .nav-brand img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+    .nav-brand {
+      display: flex; align-items: center; gap: .6rem;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .nav-brand img {
+      width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+    }
     .nav-brand-text {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.35rem; letter-spacing: .12em;
-      color: var(--cream);
+      font-size: 1.25rem; letter-spacing: .1em; color: var(--cream);
     }
     .nav-brand-text span { color: var(--gold); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links {
+      display: none; /* mobile: hidden by default */
+      list-style: none;
+      flex-direction: column;
+      position: absolute; top: 60px; left: 0; right: 0;
+      background: rgba(10,10,10,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem 1.5rem;
+      gap: .25rem;
+    }
+    .nav-links.open { display: flex; }
     .nav-links a {
+      display: block; padding: .65rem 0;
       color: var(--muted); text-decoration: none;
-      font-size: .8rem; font-weight: 600;
-      letter-spacing: .1em; text-transform: uppercase;
+      font-size: .9rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
       transition: color .2s;
     }
-    .nav-links a:hover { color: var(--cream); }
+    .nav-links li:last-child a { border-bottom: none; }
+    .nav-links a:hover, .nav-links a:active { color: var(--cream); }
+
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
     .nav-cta {
       background: var(--gold); color: #000;
-      padding: .45rem 1.2rem; border-radius: 4px;
-      font-size: .8rem; font-weight: 700;
-      letter-spacing: .05em; text-decoration: none;
-      transition: background .2s, transform .15s;
-      white-space: nowrap;
+      padding: .5rem 1rem; border-radius: 6px;
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: .04em; text-decoration: none; white-space: nowrap;
+      transition: background .2s;
+      min-height: 38px; display: flex; align-items: center;
     }
-    .nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--cream); border-radius: 2px; }
+    .nav-cta:hover { background: var(--gold-lt); }
 
-    /* ── HERO ────────────────────────────────────────────── */
+    .hamburger {
+      background: none; border: none; cursor: pointer;
+      padding: 6px; display: flex; flex-direction: column;
+      gap: 5px; flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--cream); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
     .hero {
+      padding-top: 60px; /* nav height */
       min-height: 100svh;
-      display: grid; grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 7rem 4rem 4rem;
+      display: flex; flex-direction: column;
       position: relative; overflow: hidden;
-      gap: 3rem;
     }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
       background:
-        linear-gradient(105deg, rgba(10,10,10,1) 40%, rgba(10,10,10,.5) 70%, rgba(10,10,10,.2) 100%),
-        radial-gradient(ellipse 80% 80% at 70% 50%, rgba(200,134,10,.07) 0%, transparent 70%);
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,134,10,.08) 0%, transparent 65%),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 59px, rgba(200,134,10,.02) 59px, rgba(200,134,10,.02) 60px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 59px, rgba(200,134,10,.02) 59px, rgba(200,134,10,.02) 60px);
     }
-    .hero-left { position: relative; z-index: 1; }
-    .hero-right { position: relative; z-index: 1; }
 
-    .logo-big {
-      width: 170px; height: 170px;
+    .hero-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      padding: 2.5rem 1.5rem 2rem;
+      flex: 1;
+    }
+
+    .hero-logo {
+      width: 140px; height: 140px;
       border-radius: 50%; object-fit: cover;
-      margin-bottom: 2rem;
-      filter: drop-shadow(0 0 40px rgba(200,134,10,.4));
-      animation: float 6s ease-in-out infinite;
+      margin-bottom: 1.75rem;
+      filter: drop-shadow(0 0 36px rgba(200,134,10,.45));
+      animation: float 5s ease-in-out infinite;
     }
     @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-10px); }
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
     }
 
     .hero-pill {
       display: inline-block;
-      font-size: .68rem; font-weight: 600;
-      letter-spacing: .28em; text-transform: uppercase;
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .24em; text-transform: uppercase;
       color: var(--gold);
       border: 1px solid rgba(200,134,10,.35);
-      padding: .3rem 1.1rem; border-radius: 100px;
-      margin-bottom: 1.2rem;
+      padding: .3rem 1rem; border-radius: 100px;
+      margin-bottom: 1rem;
     }
     .hero h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4rem, 8vw, 7.5rem);
-      line-height: .9; letter-spacing: .02em;
-      margin-bottom: 1rem;
+      font-size: clamp(4.5rem, 20vw, 8rem);
+      line-height: .88; letter-spacing: .02em;
+      margin-bottom: .75rem;
     }
     .hero h1 em { display: block; color: var(--gold); font-style: normal; }
     .hero-sub {
-      font-size: 1.05rem; color: var(--muted);
-      max-width: 420px; margin-bottom: 2.5rem;
+      font-size: clamp(.9rem, 3.5vw, 1.05rem);
+      color: var(--muted);
+      max-width: 340px;
+      margin-bottom: 2rem;
     }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-actions {
+      display: flex; flex-direction: column; gap: .85rem;
+      width: 100%; max-width: 340px;
+    }
 
-    /* Hero photo mosaic */
-    .hero-mosaic {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 260px 260px;
-      gap: .75rem;
-      border-radius: 16px;
-      overflow: hidden;
+    /* ─── HERO PHOTO STRIP (mobile: single / desktop: mosaic) ─ */
+    .hero-photos {
+      position: relative; z-index: 1;
+      width: 100%;
     }
-    .hero-mosaic img {
-      width: 100%; height: 100%;
+    .hero-photos-single {
+      width: 100%;
+      aspect-ratio: 4/3;
       object-fit: cover;
-      transition: transform .4s;
     }
-    .hero-mosaic img:hover { transform: scale(1.04); }
-    .hero-mosaic .span2 { grid-column: span 2; }
+    .hero-photos-mosaic { display: none; }
 
-    /* ── BUTTONS ─────────────────────────────────────────── */
+    /* ─── BUTTONS ───────────────────────────────────────────── */
     .btn-wa {
-      display: inline-flex; align-items: center; gap: .55rem;
+      display: flex; align-items: center; justify-content: center; gap: .55rem;
       background: #25D366; color: #fff;
-      padding: .85rem 2rem; border-radius: 6px;
-      font-weight: 700; font-size: .95rem; text-decoration: none;
-      transition: transform .2s, box-shadow .2s;
+      padding: .95rem 1.5rem; border-radius: 8px;
+      font-weight: 700; font-size: 1rem; text-decoration: none;
+      min-height: 52px;
+      transition: box-shadow .2s, transform .2s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn-wa:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(37,211,102,.32); }
+    .btn-wa:active { transform: scale(.98); }
+    .btn-wa:hover  { box-shadow: 0 8px 24px rgba(37,211,102,.3); }
+
     .btn-ig {
-      display: inline-flex; align-items: center; gap: .55rem;
+      display: flex; align-items: center; justify-content: center; gap: .55rem;
       background: transparent; color: var(--cream);
-      padding: .85rem 2rem; border-radius: 6px;
-      border: 1px solid var(--border);
-      font-weight: 600; font-size: .95rem; text-decoration: none;
+      padding: .95rem 1.5rem; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.15);
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      min-height: 52px;
       transition: border-color .2s, background .2s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn-ig:hover { border-color: var(--gold); background: rgba(200,134,10,.07); }
+    .btn-ig:active  { background: rgba(200,134,10,.08); }
+    .btn-ig:hover   { border-color: var(--gold); background: rgba(200,134,10,.07); }
 
-    /* ── SHARED ──────────────────────────────────────────── */
-    section { padding: 6rem 2rem; }
+    /* ─── SECTIONS ──────────────────────────────────────────── */
+    section { padding: 4rem 1.25rem; }
     .container { max-width: 1100px; margin: 0 auto; }
-    .label {
-      font-size: .65rem; font-weight: 700;
-      letter-spacing: .32em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: .6rem;
-    }
-    .title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.6rem, 6vw, 4.8rem);
-      line-height: .95; margin-bottom: .8rem;
-    }
-    .divider { width: 48px; height: 3px; background: var(--gold); margin: 1.2rem 0; }
 
-    /* ── SOBRE ───────────────────────────────────────────── */
+    .s-label {
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .5rem;
+    }
+    .s-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 8vw, 4.5rem);
+      line-height: .92; margin-bottom: .75rem;
+    }
+    .s-divider { width: 44px; height: 3px; background: var(--gold); margin: 1rem 0 1.5rem; }
+
+    /* ─── SOBRE ─────────────────────────────────────────────── */
     #sobre { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-    .sobre-text p { color: var(--muted); font-size: 1rem; margin-bottom: 1rem; }
+    .sobre-text p { color: var(--muted); font-size: .95rem; margin-bottom: .9rem; }
     .sobre-text p strong { color: var(--cream); }
-    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .75rem; margin-top: 2rem;
+    }
     .stat {
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.5rem; text-align: center;
+      border-radius: var(--radius); padding: 1.25rem 1rem;
+      text-align: center;
     }
-    .stat-n { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; color: var(--gold); line-height: 1; }
-    .stat-l { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: .3rem; display: block; }
+    .stat-n {
+      display: block; font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem; color: var(--gold); line-height: 1;
+    }
+    .stat-l {
+      display: block; font-size: .68rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .1em; margin-top: .25rem;
+    }
 
-    /* ── MARCAS ──────────────────────────────────────────── */
+    /* ─── MARCAS ─────────────────────────────────────────────── */
     #marcas { background: var(--bg); }
-    .marcas-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 3rem; }
+    .marcas-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .75rem; margin-top: 2rem;
+    }
     .marca {
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1.75rem 1rem;
-      text-align: center; transition: border-color .25s, transform .25s;
+      border-radius: var(--radius); padding: 1.5rem 1rem;
+      text-align: center;
+      transition: border-color .25s, transform .25s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .marca:hover { border-color: var(--gold); transform: translateY(-5px); }
-    .marca-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .08em; }
-    .marca-sub { font-size: .65rem; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin-top: .2rem; }
+    .marca:active { transform: scale(.97); }
+    .marca:hover  { border-color: var(--gold); transform: translateY(-4px); }
+    .marca-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: .08em; }
+    .marca-sub  { font-size: .62rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-top: .2rem; }
 
-    /* ── PRODUTOS ────────────────────────────────────────── */
+    /* ─── PRODUTOS ───────────────────────────────────────────── */
     #produtos { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .produtos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .produtos-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
     .produto {
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      transition: transform .25s, border-color .25s;
+      border-radius: var(--radius); overflow: hidden;
+      display: grid; grid-template-columns: 130px 1fr;
+      transition: border-color .25s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .produto:hover { transform: translateY(-6px); border-color: var(--gold); }
+    .produto:active { border-color: var(--gold); }
     .produto-thumb {
-      height: 260px; overflow: hidden;
-      background: var(--bg);
+      aspect-ratio: 1;
+      overflow: hidden; flex-shrink: 0;
     }
     .produto-thumb img {
       width: 100%; height: 100%; object-fit: cover;
       transition: transform .4s;
     }
     .produto:hover .produto-thumb img { transform: scale(1.06); }
-    .produto-body { padding: 1.4rem 1.5rem; }
-    .produto-tag { font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .4rem; }
-    .produto-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; margin-bottom: .4rem; }
-    .produto-desc { font-size: .85rem; color: var(--muted); }
+    .produto-body { padding: 1rem 1.1rem; display: flex; flex-direction: column; justify-content: center; }
+    .produto-tag  { font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .produto-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; margin-bottom: .3rem; line-height: 1.1; }
+    .produto-desc  { font-size: .8rem; color: var(--muted); line-height: 1.5; }
     .produto-cta {
-      display: inline-flex; align-items: center; gap: .4rem;
-      margin-top: 1rem; font-size: .8rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: .35rem;
+      margin-top: .75rem; font-size: .78rem; font-weight: 700;
       color: var(--gold); text-decoration: none;
       transition: gap .2s;
     }
-    .produto-cta:hover { gap: .7rem; }
+    .produto-cta:hover { gap: .6rem; }
 
-    /* ── LOOKBOOK ────────────────────────────────────────── */
+    /* ─── LOOKBOOK ───────────────────────────────────────────── */
     #lookbook { background: var(--bg); }
     .look-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 380px;
-      gap: .75rem; margin-top: 3rem;
-      border-radius: 14px; overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .6rem; margin-top: 2rem;
     }
     .look-grid img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform .4s;
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      border-radius: var(--radius);
+      transition: transform .35s;
     }
-    .look-grid img:hover { transform: scale(1.04); }
+    .look-grid img:first-child {
+      grid-column: span 2;
+      aspect-ratio: 16/9;
+    }
+    .look-grid img:hover { transform: scale(1.02); }
 
-    /* ── DIFERENCIAIS ────────────────────────────────────── */
+    /* ─── DIFERENCIAIS ───────────────────────────────────────── */
     #diferenciais { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .dif-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3rem; }
+    .dif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 2rem; }
     .dif {
       background: var(--bg3); border: 1px solid var(--border);
       border-top: 3px solid var(--gold);
-      border-radius: 10px; padding: 2rem 1.5rem;
+      border-radius: var(--radius); padding: 1.5rem 1.1rem;
     }
-    .dif-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .dif-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; margin-bottom: .5rem; }
-    .dif-desc { font-size: .85rem; color: var(--muted); }
+    .dif-icon  { font-size: 1.8rem; margin-bottom: .75rem; }
+    .dif-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; margin-bottom: .4rem; line-height: 1.1; }
+    .dif-desc  { font-size: .8rem; color: var(--muted); line-height: 1.5; }
 
-    /* ── CONTATO ─────────────────────────────────────────── */
+    /* ─── CONTATO ────────────────────────────────────────────── */
     #contato { background: var(--bg); text-align: center; }
-    .contato-inner { max-width: 580px; margin: 0 auto; }
-    .contato-inner p { color: var(--muted); font-size: 1.05rem; margin-bottom: 2.2rem; }
-    .contato-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .contato-inner { max-width: 440px; margin: 0 auto; }
+    .contato-inner p { color: var(--muted); font-size: .95rem; margin-bottom: 2rem; }
+    .contato-actions { display: flex; flex-direction: column; gap: .85rem; }
 
-    /* ── FOOTER ──────────────────────────────────────────── */
+    /* ─── FOOTER ─────────────────────────────────────────────── */
     footer {
       background: var(--bg2); border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem; text-align: center;
-      color: var(--muted); font-size: .82rem;
+      padding: 1.75rem 1.25rem; text-align: center;
+      color: var(--muted); font-size: .8rem;
     }
     footer a { color: var(--gold); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
 
-    /* ── SCROLL HINT ─────────────────────────────────────── */
-    .scroll-hint {
-      display: none;
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      flex-direction: column; align-items: center; gap: .4rem;
-      color: var(--muted); font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
-      animation: bob 2.2s ease-in-out infinite;
-    }
-    .scroll-hint svg { width: 18px; opacity: .5; }
-    @keyframes bob {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      55%      { transform: translateX(-50%) translateY(7px); }
-    }
+    /* ─── FADE-IN ANIMATION ──────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
 
-    /* ── RESPONSIVE ──────────────────────────────────────── */
-    @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; padding: 6rem 2rem 4rem; text-align: center; }
-      .hero-left { display: flex; flex-direction: column; align-items: center; }
-      .hero-sub { margin-left: auto; margin-right: auto; }
-      .hero-actions { justify-content: center; }
-      .hero-mosaic { max-width: 500px; margin: 0 auto; }
-      .look-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 260px 260px; }
-      .look-grid img:first-child { grid-column: span 2; }
-    }
-    @media (max-width: 900px) {
+    /* ─── TABLET (600px+) ────────────────────────────────────── */
+    @media (min-width: 600px) {
+      nav { padding: 0 2rem; }
+      section { padding: 5rem 2rem; }
+
+      .hero-content { padding: 3rem 2.5rem 2.5rem; max-width: 640px; margin: 0 auto; }
+      .hero-logo { width: 160px; height: 160px; }
+      .hero-actions { flex-direction: row; justify-content: center; max-width: none; }
+      .btn-wa, .btn-ig { width: auto; padding: .85rem 1.75rem; }
+
+      .hero-photos-single  { display: none; }
+      .hero-photos-mosaic  {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .6rem;
+        padding: 0 2rem 2.5rem;
+      }
+      .hero-photos-mosaic img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--radius); }
+      .hero-photos-mosaic img:first-child { aspect-ratio: 16/9; grid-column: span 2; }
+
       .marcas-grid { grid-template-columns: repeat(3, 1fr); }
-      .dif-grid     { grid-template-columns: repeat(2, 1fr); }
-      .sobre-grid   { grid-template-columns: 1fr; gap: 3rem; }
+      .produtos-grid { display: grid; grid-template-columns: 1fr 1fr; }
+      .produto { display: flex; flex-direction: column; grid-template-columns: unset; }
+      .produto-thumb { aspect-ratio: 4/3; }
+      .look-grid { grid-template-columns: 1fr 1fr; }
+      .look-grid img:first-child { aspect-ratio: 16/9; }
+      .contato-actions { flex-direction: row; justify-content: center; }
     }
-    @media (max-width: 680px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .marcas-grid   { grid-template-columns: repeat(2, 1fr); }
-      .produtos-grid { grid-template-columns: 1fr; }
-      .dif-grid      { grid-template-columns: 1fr; }
-      section { padding: 4rem 1.25rem; }
-      .hero h1 { font-size: clamp(3.5rem, 16vw, 6rem); }
-      .hero-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 180px; }
-      .look-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
-      .look-grid img { height: 260px; }
-    }
-    @media (max-width: 400px) {
-      .stats { grid-template-columns: 1fr 1fr; }
+
+    /* ─── DESKTOP (960px+) ───────────────────────────────────── */
+    @media (min-width: 960px) {
+      nav { height: 64px; }
+      nav { padding: 0 2.5rem; }
+
+      /* Show desktop nav links, hide hamburger */
+      .hamburger { display: none; }
+      .nav-links {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        border: none;
+        padding: 0;
+        gap: 2rem;
+      }
+      .nav-links a { border: none; padding: 0; font-size: .78rem; }
+
+      .hero {
+        flex-direction: row;
+        padding-top: 64px;
+        min-height: 100svh;
+        align-items: center;
+      }
+      .hero-content {
+        flex: 1; padding: 4rem 3rem 4rem 4rem;
+        text-align: left; align-items: flex-start;
+        max-width: none;
+      }
+      .hero-logo { width: 180px; height: 180px; }
+      .hero-sub  { max-width: 440px; }
+      .hero-actions { flex-direction: row; }
+
+      .hero-photos { flex: 1; padding: 4rem 4rem 4rem 0; }
+      .hero-photos-single { display: none; }
+      .hero-photos-mosaic {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: .75rem;
+        padding: 0;
+        height: 100%;
+      }
+      .hero-photos-mosaic img {
+        border-radius: var(--radius);
+        transition: transform .35s;
+      }
+      .hero-photos-mosaic img:hover { transform: scale(1.03); }
+      .hero-photos-mosaic img:first-child { aspect-ratio: unset; height: 100%; min-height: 260px; }
+      .hero-photos-mosaic img:not(:first-child) { aspect-ratio: unset; height: calc(50% - .375rem); min-height: 200px; }
+      .hero-photos-mosaic { flex-direction: column; }
+      .hero-photos-mosaic img:not(:first-child) { height: 240px; }
+
+      section { padding: 6rem 2rem; }
+
+      .sobre-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+      .stats { margin-top: 0; }
+      .marcas-grid { grid-template-columns: repeat(5, 1fr); }
+      .produtos-grid { grid-template-columns: repeat(3, 1fr); }
+      .look-grid { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 400px; }
+      .look-grid img { border-radius: 0; height: 100%; aspect-ratio: unset; }
+      .look-grid img:first-child { grid-column: unset; aspect-ratio: unset; border-radius: var(--radius) 0 0 var(--radius); }
+      .look-grid img:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+      .dif-grid { grid-template-columns: repeat(4, 1fr); }
+      .contato-inner { max-width: 580px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── NAV ─────────────────────────────────────────────────── -->
+<!-- ─── NAV ────────────────────────────────────────────────────── -->
 <nav id="nav">
   <a href="#" class="nav-brand">
-    <img src="assets/logo.png" alt="Ranch UAI logo" />
+    <img src="assets/logo.png" alt="Ranch UAI" />
     <span class="nav-brand-text">Ranch <span>UAI</span></span>
   </a>
-  <ul class="nav-links">
-    <li><a href="#sobre">Sobre</a></li>
-    <li><a href="#marcas">Marcas</a></li>
-    <li><a href="#produtos">Produtos</a></li>
-    <li><a href="#contato">Contato</a></li>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#sobre"       onclick="closeMenu()">Sobre</a></li>
+    <li><a href="#marcas"      onclick="closeMenu()">Marcas</a></li>
+    <li><a href="#produtos"    onclick="closeMenu()">Produtos</a></li>
+    <li><a href="#contato"     onclick="closeMenu()">Contato</a></li>
   </ul>
-  <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F" target="_blank" rel="noopener" class="nav-cta">Comprar agora</a>
-  <button class="hamburger" aria-label="Menu" id="hamburger">
-    <span></span><span></span><span></span>
-  </button>
+
+  <div class="nav-right">
+    <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
+       target="_blank" rel="noopener" class="nav-cta">Comprar agora</a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
-<!-- ── HERO ─────────────────────────────────────────────────── -->
-<section class="hero" id="hero">
-  <div class="hero-left">
-    <img src="assets/logo.png" alt="Ranch UAI" class="logo-big" />
+<!-- ─── HERO ────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-content">
+    <img src="assets/logo.png" alt="Ranch UAI" class="hero-logo" />
     <div class="hero-pill">🇧🇷 🇺🇸 Produtos Nacionais e Importados</div>
     <h1>Ranch <em>UAI</em></h1>
-    <p class="hero-sub">
-      A marca do Home Cuiudo — moda country autêntica com as melhores marcas do mercado. Envio para todo o Brasil.
-    </p>
+    <p class="hero-sub">A marca do Home Cuiudo — moda country autêntica com as melhores marcas do mercado. Envio para todo o Brasil.</p>
     <div class="hero-actions">
-      <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F" target="_blank" rel="noopener" class="btn-wa">
+      <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
+         target="_blank" rel="noopener" class="btn-wa">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
         Comprar pelo WhatsApp
       </a>
@@ -359,97 +487,97 @@
     </div>
   </div>
 
-  <div class="hero-right">
-    <div class="hero-mosaic">
-      <img src="assets/foto-casal.jpg"     alt="Casal Ranch UAI" class="span2" />
+  <!-- foto única no mobile -->
+  <div class="hero-photos">
+    <img src="assets/foto-casal.jpg" alt="Ranch UAI" class="hero-photos-single" />
+    <div class="hero-photos-mosaic">
+      <img src="assets/foto-casal.jpg"     alt="Casal Ranch UAI" />
       <img src="assets/foto-bones.jpg"     alt="Bonés TUFF" />
       <img src="assets/foto-camisetas.jpg" alt="Camisetas TXC" />
     </div>
   </div>
-
-  <div class="scroll-hint" style="display:flex">
-    Scroll
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-  </div>
 </section>
 
-<!-- ── SOBRE ──────────────────────────────────────────────────  -->
+<!-- ─── SOBRE ───────────────────────────────────────────────────── -->
 <section id="sobre">
   <div class="container">
-    <div class="sobre-grid">
+    <div class="sobre-inner">
       <div class="sobre-text">
-        <div class="label">Quem somos</div>
-        <h2 class="title">A Marca do<br>Home Cuiudo</h2>
-        <div class="divider"></div>
+        <div class="s-label">Quem somos</div>
+        <h2 class="s-title">A Marca do<br>Home Cuiudo</h2>
+        <div class="s-divider"></div>
         <p>Ranch UAI é uma loja country especializada em moda autêntica — <strong>produtos nacionais e importados</strong> para quem vive e respira o estilo country.</p>
-        <p>Trabalhamos com as principais marcas do mercado: <strong>Ariat, TXC, TUFF, Cinch e King Farm</strong>. Do chapéu à calça, do tênis ao cinto — temos tudo que o country lover precisa.</p>
-        <p>Atendimento personalizado e <strong>envio para todo o Brasil</strong>. Fale diretamente com a gente pelo WhatsApp.</p>
+        <p>Trabalhamos com as principais marcas: <strong>Ariat, TXC, TUFF, Cinch e King Farm</strong>. Do chapéu à calça, do tênis ao cinto — temos tudo que o country lover precisa.</p>
+        <p>Atendimento personalizado e <strong>envio para todo o Brasil</strong>.</p>
       </div>
       <div class="stats">
-        <div class="stat"><span class="stat-n">+1.2K</span><span class="stat-l">Seguidores</span></div>
-        <div class="stat"><span class="stat-n">5+</span><span class="stat-l">Marcas premium</span></div>
-        <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Para todo o Brasil</span></div>
-        <div class="stat"><span class="stat-n">🤠</span><span class="stat-l">Home Cuiudo</span></div>
+        <div class="stat reveal"><span class="stat-n">+1.2K</span><span class="stat-l">Seguidores</span></div>
+        <div class="stat reveal"><span class="stat-n">5+</span><span class="stat-l">Marcas premium</span></div>
+        <div class="stat reveal"><span class="stat-n">100%</span><span class="stat-l">Todo o Brasil</span></div>
+        <div class="stat reveal"><span class="stat-n">🤠</span><span class="stat-l">Home Cuiudo</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── MARCAS ─────────────────────────────────────────────────── -->
+<!-- ─── MARCAS ──────────────────────────────────────────────────── -->
 <section id="marcas">
   <div class="container">
-    <div class="label">O que temos</div>
-    <h2 class="title">As Melhores<br>Marcas do Mercado</h2>
+    <div class="s-label">O que temos</div>
+    <h2 class="s-title">As Melhores<br>Marcas do Mercado</h2>
     <div class="marcas-grid">
-      <div class="marca"><div class="marca-name">ARIAT</div><div class="marca-sub">International</div></div>
-      <div class="marca"><div class="marca-name">TXC</div><div class="marca-sub">United Styles</div></div>
-      <div class="marca"><div class="marca-name">TUFF</div><div class="marca-sub">Since 2015</div></div>
-      <div class="marca"><div class="marca-name">CINCH</div><div class="marca-sub">Denim</div></div>
-      <div class="marca"><div class="marca-name">KING FARM</div><div class="marca-sub">Country</div></div>
+      <div class="marca reveal"><div class="marca-name">ARIAT</div><div class="marca-sub">International</div></div>
+      <div class="marca reveal"><div class="marca-name">TXC</div><div class="marca-sub">United Styles</div></div>
+      <div class="marca reveal"><div class="marca-name">TUFF</div><div class="marca-sub">Since 2015</div></div>
+      <div class="marca reveal"><div class="marca-name">CINCH</div><div class="marca-sub">Denim</div></div>
+      <div class="marca reveal"><div class="marca-name">KING FARM</div><div class="marca-sub">Country</div></div>
     </div>
   </div>
 </section>
 
-<!-- ── PRODUTOS ───────────────────────────────────────────────── -->
+<!-- ─── PRODUTOS ────────────────────────────────────────────────── -->
 <section id="produtos">
   <div class="container">
-    <div class="label">O que oferecemos</div>
-    <h2 class="title">Nossos<br>Produtos</h2>
+    <div class="s-label">O que oferecemos</div>
+    <h2 class="s-title">Nossos<br>Produtos</h2>
     <div class="produtos-grid">
 
-      <div class="produto">
+      <div class="produto reveal">
         <div class="produto-thumb">
-          <img src="assets/foto-camisetas.jpg" alt="Camisetas Country" />
+          <img src="assets/foto-camisetas.jpg" alt="Camisetas Country" loading="lazy" />
         </div>
         <div class="produto-body">
           <div class="produto-tag">Vestuário</div>
           <div class="produto-title">Camisetas Country</div>
-          <div class="produto-desc">Camisetas nacionais e importadas das melhores marcas — corte perfeito para o estilo country.</div>
-          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F" target="_blank" rel="noopener" class="produto-cta">Pedir via WhatsApp →</a>
+          <div class="produto-desc">Nacionais e importadas das melhores marcas — corte perfeito para o estilo country.</div>
+          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
+             target="_blank" rel="noopener" class="produto-cta">Pedir agora →</a>
         </div>
       </div>
 
-      <div class="produto">
+      <div class="produto reveal">
         <div class="produto-thumb">
-          <img src="assets/foto-bones.jpg" alt="Bonés e Chapéus" />
+          <img src="assets/foto-bones.jpg" alt="Bonés e Chapéus" loading="lazy" />
         </div>
         <div class="produto-body">
           <div class="produto-tag">Acessórios</div>
           <div class="produto-title">Bonés & Chapéus</div>
-          <div class="produto-desc">Trucker hats, bonés estruturados e chapéus das marcas mais desejadas — TUFF, Ariat, Cinch e mais.</div>
-          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F" target="_blank" rel="noopener" class="produto-cta">Pedir via WhatsApp →</a>
+          <div class="produto-desc">Trucker hats e bonés estruturados — TUFF, Ariat, Cinch e mais.</div>
+          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
+             target="_blank" rel="noopener" class="produto-cta">Pedir agora →</a>
         </div>
       </div>
 
-      <div class="produto">
+      <div class="produto reveal">
         <div class="produto-thumb">
-          <img src="assets/foto-look.jpg" alt="Look Country" />
+          <img src="assets/foto-look.jpg" alt="Look Country" loading="lazy" />
         </div>
         <div class="produto-body">
           <div class="produto-tag">Look Completo</div>
           <div class="produto-title">Calças & Looks</div>
-          <div class="produto-desc">Calças jeans premium e looks completos — do boné ao cinto, do tênis à calça. Estilo country do jeito certo.</div>
-          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F" target="_blank" rel="noopener" class="produto-cta">Pedir via WhatsApp →</a>
+          <div class="produto-desc">Calças jeans premium e looks completos do chapéu ao cinto.</div>
+          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
+             target="_blank" rel="noopener" class="produto-cta">Pedir agora →</a>
         </div>
       </div>
 
@@ -457,58 +585,59 @@
   </div>
 </section>
 
-<!-- ── LOOKBOOK ───────────────────────────────────────────────── -->
+<!-- ─── LOOKBOOK ─────────────────────────────────────────────────── -->
 <section id="lookbook">
   <div class="container">
-    <div class="label">Lookbook</div>
-    <h2 class="title">O Estilo<br>Ranch UAI</h2>
+    <div class="s-label">Lookbook</div>
+    <h2 class="s-title">O Estilo<br>Ranch UAI</h2>
     <div class="look-grid">
-      <img src="assets/foto-casal.jpg" alt="Casal Ranch UAI" />
-      <img src="assets/foto-look.jpg"  alt="Look masculino" />
-      <img src="assets/foto-bones.jpg" alt="Coleção bonés" />
+      <img src="assets/foto-casal.jpg" alt="Casal Ranch UAI" loading="lazy" />
+      <img src="assets/foto-look.jpg"  alt="Look masculino"  loading="lazy" />
+      <img src="assets/foto-bones.jpg" alt="Coleção bonés"   loading="lazy" />
     </div>
   </div>
 </section>
 
-<!-- ── DIFERENCIAIS ───────────────────────────────────────────── -->
+<!-- ─── DIFERENCIAIS ─────────────────────────────────────────────── -->
 <section id="diferenciais">
   <div class="container">
-    <div class="label">Por que escolher</div>
-    <h2 class="title">Nossos<br>Diferenciais</h2>
+    <div class="s-label">Por que escolher</div>
+    <h2 class="s-title">Nossos<br>Diferenciais</h2>
     <div class="dif-grid">
-      <div class="dif">
+      <div class="dif reveal">
         <div class="dif-icon">🇧🇷🇺🇸</div>
         <div class="dif-title">Nacional & Importado</div>
-        <div class="dif-desc">Produtos nacionais e importados das melhores marcas country do mundo.</div>
+        <div class="dif-desc">As melhores marcas country do Brasil e dos EUA em um só lugar.</div>
       </div>
-      <div class="dif">
+      <div class="dif reveal">
         <div class="dif-icon">🚚</div>
         <div class="dif-title">Envio para Todo o Brasil</div>
-        <div class="dif-desc">Comprou, recebeu. Entregamos em todo o Brasil com rapidez e segurança.</div>
+        <div class="dif-desc">Comprou, recebeu. Entregamos em todo o território nacional.</div>
       </div>
-      <div class="dif">
+      <div class="dif reveal">
         <div class="dif-icon">💬</div>
         <div class="dif-title">Atendimento pelo WhatsApp</div>
-        <div class="dif-desc">Atendimento direto e personalizado. Tire dúvidas, veja fotos e feche o pedido.</div>
+        <div class="dif-desc">Direto e personalizado. Tire dúvidas e feche o pedido na hora.</div>
       </div>
-      <div class="dif">
+      <div class="dif reveal">
         <div class="dif-icon">⭐</div>
         <div class="dif-title">Clientes Satisfeitos</div>
-        <div class="dif-desc">Veja os destaques "Clientes" e "Envios" no nosso Instagram.</div>
+        <div class="dif-desc">Veja os destaques "Clientes" e "Envios" no Instagram.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── CONTATO ────────────────────────────────────────────────── -->
+<!-- ─── CONTATO ──────────────────────────────────────────────────── -->
 <section id="contato">
   <div class="container">
     <div class="contato-inner">
-      <div class="label">Fale conosco</div>
-      <h2 class="title">Pronto para<br>Vestir Country?</h2>
-      <p>Manda uma mensagem no WhatsApp ou nos segue no Instagram para ver os lançamentos e sorteios em primeira mão.</p>
+      <div class="s-label">Fale conosco</div>
+      <h2 class="s-title">Pronto para<br>Vestir Country?</h2>
+      <p>Manda uma mensagem no WhatsApp ou segue no Instagram para ver os lançamentos e sorteios em primeira mão.</p>
       <div class="contato-actions">
-        <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F" target="_blank" rel="noopener" class="btn-wa">
+        <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
+           target="_blank" rel="noopener" class="btn-wa">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
           WhatsApp
         </a>
@@ -521,17 +650,34 @@
   </div>
 </section>
 
-<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<!-- ─── FOOTER ───────────────────────────────────────────────────── -->
 <footer>
-  <p>© 2025 Ranch UAI – Moda Country &nbsp;·&nbsp; <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener">@ranch_uai</a></p>
+  <p>© 2025 Ranch UAI – Moda Country &nbsp;·&nbsp;
+     <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener">@ranch_uai</a>
+  </p>
 </footer>
 
 <script>
+  // Nav scroll highlight
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
-    nav.style.borderBottomColor = window.scrollY > 60 ? 'rgba(200,134,10,.25)' : '';
+    nav.style.borderBottomColor = window.scrollY > 50 ? 'rgba(200,134,10,.3)' : '';
   }, { passive: true });
 
+  // Hamburger menu
+  const hamburger  = document.getElementById('hamburger');
+  const navLinks   = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+  });
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+
+  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href'));
@@ -539,38 +685,11 @@
     });
   });
 
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.querySelector('.nav-links');
-  hamburger.addEventListener('click', () => {
-    const open = navLinks.style.display === 'flex';
-    if (open) {
-      navLinks.removeAttribute('style');
-    } else {
-      Object.assign(navLinks.style, {
-        display: 'flex', flexDirection: 'column', position: 'absolute',
-        top: '64px', left: '0', right: '0',
-        background: 'rgba(10,10,10,0.98)',
-        padding: '1.5rem 2.5rem',
-        borderBottom: '1px solid #252015'
-      });
-    }
-  });
-
+  // Reveal on scroll
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.stat, .marca, .produto, .dif').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(22px)';
-    el.style.transition = 'opacity .55s ease, transform .55s ease';
-    obs.observe(el);
-  });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
