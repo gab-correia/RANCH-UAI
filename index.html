@@ -3,697 +3,1588 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ranch UAI – Moda Country</title>
-  <meta name="description" content="Loja country com produtos nacionais e importados. Ariat, TXC, TUFF, Cinch, King Farm. Envio para todo o Brasil." />
+
+  <!-- ══════════ SEO ══════════ -->
+  <title>Ranch UAI – Moda Country | A marca do Home Cuiudo</title>
+  <meta name="description" content="Loja de moda country Ranch UAI. Camisetas, bonés, calças e looks das marcas Ariat, TXC, TUFF, Cinch e King Farm. Peça pelo WhatsApp e receba em todo o Brasil, uai!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ranch UAI – Moda Country" />
+  <meta property="og:description" content="A marca do Home Cuiudo. Moda country nacional e importada — pedido rápido pelo WhatsApp, envio pra todo o Brasil." />
+  <meta property="og:image" content="https://ranchuai.me/assets/logo.png" />
+  <meta property="og:url" content="https://ranchuai.me/" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta name="theme-color" content="#0a0a0a" />
+
   <link rel="icon" href="assets/logo.png" type="image/png" />
   <link rel="apple-touch-icon" href="assets/logo.png" />
+
+  <!-- Dados estruturados: loja de roupas (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ClothingStore",
+    "name": "Ranch UAI",
+    "slogan": "A marca do Home Cuiudo",
+    "url": "https://ranchuai.me",
+    "logo": "https://ranchuai.me/assets/logo.png",
+    "image": "https://ranchuai.me/assets/logo.png",
+    "telephone": "+5535997193368",
+    "sameAs": ["https://www.instagram.com/ranch_uai/"]
+  }
+  </script>
+
+  <!-- ══════════ FONTES (preconnect + swap) ══════════ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
+    /* ════════════════════════════════════════════════════════════
+       RANCH UAI — CSS mobile-first
+       Base pro celular · media queries só em 600px e 960px
+       ════════════════════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #0a0a0a;
-      --bg2:     #111111;
-      --bg3:     #1a1a1a;
-      --gold:    #c8860a;
-      --gold-lt: #e8a020;
-      --cream:   #f5f0e8;
-      --muted:   #7a7060;
-      --border:  #252015;
-      --radius:  12px;
+      --preto:    #0a0a0a;   /* fundo principal */
+      --preto2:   #111111;   /* fundo alternado */
+      --preto3:   #1a1512;   /* cards (tom de couro escuro) */
+      --dourado:  #c8860a;   /* dourado queimado */
+      --dourado2: #e8a020;   /* dourado claro (hover) */
+      --creme:    #f5f0e8;   /* texto principal */
+      --couro:    #8a6a45;   /* marrom couro de apoio */
+      --cinza:    #b8ad9c;   /* texto secundário (contraste AA em fundo escuro) */
+      --borda:    #2b2318;
+      --verde:    #25d366;   /* WhatsApp */
+      --raio:     12px;
+      --fonte-rodeio: 'Rye', 'Bebas Neue', serif;
+      --fonte-titulo: 'Bebas Neue', sans-serif;
     }
 
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
-      background: var(--bg);
-      color: var(--cream);
+      background: var(--preto);
+      color: var(--creme);
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+      /* textura sutil de couro: gradiente + "grão" leve, sem imagem externa */
+      background-image:
+        radial-gradient(ellipse 120% 80% at 50% -10%, rgba(138,106,69,.06), transparent 60%);
     }
 
     img { display: block; max-width: 100%; height: auto; }
+    button { font-family: inherit; cursor: pointer; }
 
-    /* ─── NAV ──────────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      background: rgba(10,10,10,0.94);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
+    /* Foco visível pra acessibilidade */
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 3px solid var(--dourado2);
+      outline-offset: 2px;
+    }
+
+    /* Skip link: "Pular para o catálogo" (visível só no foco) */
+    .pular-link {
+      position: fixed; top: -100px; left: 1rem; z-index: 1000;
+      background: var(--dourado); color: #000;
+      padding: .8rem 1.2rem; border-radius: 0 0 10px 10px;
+      font-weight: 800; text-decoration: none;
+      transition: top .2s;
+    }
+    .pular-link:focus { top: 0; }
+
+    /* Barra de progresso do scroll (linha dourada acima da nav) */
+    .progresso {
+      position: fixed; top: 0; left: 0; z-index: 910;
+      width: 100%; height: 3px;
+      background: var(--dourado);
+      transform: scaleX(0); transform-origin: 0 50%;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    /* ─── Divisor "costura de sela" ─────────────────────────── */
+    .costura {
+      border: none;
+      border-top: 3px dashed rgba(200,134,10,.4);
+      max-width: 180px;
+      margin: 1.1rem auto 1.6rem;
+    }
+    .costura.esq { margin-left: 0; }
+
+    /* ════════════════ NAV ════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
       height: 60px;
-      display: flex; align-items: center;
-      padding: 0 1.25rem;
-      gap: 1rem;
-      transition: border-color .3s;
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0 1rem;
+      /* glassmorphism leve com fallback sólido */
+      background: rgba(10,10,10,.96);
+      border-bottom: 1px solid var(--borda);
     }
-    .nav-brand {
+    @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+      .nav { background: rgba(10,10,10,.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    }
+    .nav-marca {
       display: flex; align-items: center; gap: .6rem;
-      text-decoration: none; flex-shrink: 0;
+      text-decoration: none; flex-shrink: 0; min-height: 44px;
     }
-    .nav-brand img {
-      width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+    .nav-marca img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+    .nav-marca-txt {
+      font-family: var(--fonte-titulo);
+      font-size: 1.3rem; letter-spacing: .09em; color: var(--creme); line-height: 1;
     }
-    .nav-brand-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.25rem; letter-spacing: .1em; color: var(--cream);
-    }
-    .nav-brand-text span { color: var(--gold); }
+    .nav-marca-txt span { color: var(--dourado); }
 
     .nav-links {
-      display: none; /* mobile: hidden by default */
+      display: none; /* mobile: escondido, abre no hambúrguer */
       list-style: none;
       flex-direction: column;
       position: absolute; top: 60px; left: 0; right: 0;
-      background: rgba(10,10,10,0.98);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.5rem 1.5rem;
-      gap: .25rem;
+      background: rgba(10,10,10,.98);
+      border-bottom: 2px dashed rgba(200,134,10,.35);
+      padding: .5rem 1.25rem 1.25rem;
     }
-    .nav-links.open { display: flex; }
+    .nav-links.aberto { display: flex; }
     .nav-links a {
-      display: block; padding: .65rem 0;
-      color: var(--muted); text-decoration: none;
-      font-size: .9rem; font-weight: 600;
-      letter-spacing: .08em; text-transform: uppercase;
-      border-bottom: 1px solid var(--border);
-      transition: color .2s;
+      display: flex; align-items: center; min-height: 48px;
+      color: var(--creme); text-decoration: none;
+      font-size: 1rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      border-bottom: 1px solid var(--borda);
     }
     .nav-links li:last-child a { border-bottom: none; }
-    .nav-links a:hover, .nav-links a:active { color: var(--cream); }
+    .nav-links a:hover { color: var(--dourado2); }
 
-    .nav-right { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
-    .nav-cta {
-      background: var(--gold); color: #000;
-      padding: .5rem 1rem; border-radius: 6px;
-      font-size: .78rem; font-weight: 700;
-      letter-spacing: .04em; text-decoration: none; white-space: nowrap;
-      transition: background .2s;
-      min-height: 38px; display: flex; align-items: center;
-    }
-    .nav-cta:hover { background: var(--gold-lt); }
-    /* esconde o botão no mobile — o hero já tem CTA grande */
-    @media (max-width: 599px) { .nav-cta { display: none; } }
-
-    .hamburger {
-      background: none; border: none; cursor: pointer;
-      padding: 6px; display: flex; flex-direction: column;
+    .hamburguer {
+      margin-left: auto;
+      background: none; border: none;
+      min-width: 48px; min-height: 48px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 5px; flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
     }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--cream); border-radius: 2px;
+    .hamburguer span {
+      display: block; width: 24px; height: 3px;
+      background: var(--creme); border-radius: 2px;
       transition: transform .3s, opacity .3s;
     }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .hamburguer.aberto span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburguer.aberto span:nth-child(2) { opacity: 0; }
+    .hamburguer.aberto span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-    /* ─── HERO ─────────────────────────────────────────────── */
+    /* ════════════════ HERO ════════════════ */
     .hero {
-      padding-top: 60px; /* nav height */
-      min-height: 100svh;
+      position: relative;
+      padding: calc(60px + 3rem) 1.25rem 3rem;
+      min-height: 88svh;
       display: flex; flex-direction: column;
-      position: relative; overflow: hidden;
-    }
-    .hero-glow {
-      position: absolute; inset: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,134,10,.08) 0%, transparent 65%),
-        repeating-linear-gradient(0deg, transparent 0px, transparent 59px, rgba(200,134,10,.02) 59px, rgba(200,134,10,.02) 60px),
-        repeating-linear-gradient(90deg, transparent 0px, transparent 59px, rgba(200,134,10,.02) 59px, rgba(200,134,10,.02) 60px);
-    }
-
-    .hero-content {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column; align-items: center;
+      align-items: center; justify-content: center;
       text-align: center;
-      padding: 2.5rem 1.5rem 2rem;
-      flex: 1;
+      overflow: hidden;
+      border-bottom: 3px dashed rgba(200,134,10,.3);
     }
+    /* camada de parallax: brilho dourado + trama de madeira sutil */
+    .hero-fundo {
+      position: absolute; inset: -20% 0;
+      pointer-events: none;
+      will-change: transform;
+      background:
+        radial-gradient(ellipse 85% 55% at 50% 42%, rgba(200,134,10,.12) 0%, transparent 65%),
+        repeating-linear-gradient(90deg, transparent 0 46px, rgba(138,106,69,.05) 46px 48px),
+        repeating-linear-gradient(0deg,  transparent 0 90px, rgba(138,106,69,.04) 90px 92px);
+    }
+    .hero-conteudo { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 420px; }
 
     .hero-logo {
-      width: 140px; height: 140px;
+      width: clamp(120px, 34vw, 160px); height: clamp(120px, 34vw, 160px);
       border-radius: 50%; object-fit: cover;
-      margin-bottom: 1.75rem;
-      filter: drop-shadow(0 0 36px rgba(200,134,10,.45));
-      animation: float 5s ease-in-out infinite;
+      border: 3px solid rgba(200,134,10,.5);
+      box-shadow: 0 0 42px rgba(200,134,10,.35);
+      margin-bottom: 1.4rem;
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-10px); }
-    }
-
-    .hero-pill {
-      display: inline-block;
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .24em; text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid rgba(200,134,10,.35);
-      padding: .3rem 1rem; border-radius: 100px;
+    .hero-selo {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--dourado2);
+      border: 1px solid rgba(200,134,10,.45);
+      padding: .35rem 1rem; border-radius: 100px;
       margin-bottom: 1rem;
     }
     .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4.5rem, 20vw, 8rem);
-      line-height: .88; letter-spacing: .02em;
-      margin-bottom: .75rem;
+      font-family: var(--fonte-rodeio);
+      font-size: clamp(2.6rem, 13vw, 5rem);
+      line-height: 1.02; letter-spacing: .01em;
+      text-shadow: 0 4px 0 rgba(0,0,0,.6);
     }
-    .hero h1 em { display: block; color: var(--gold); font-style: normal; }
+    .hero h1 em { color: var(--dourado); font-style: normal; }
+    .hero-slogan {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.15rem, 5vw, 1.6rem);
+      letter-spacing: .12em; color: var(--creme);
+      margin-top: .5rem;
+    }
     .hero-sub {
-      font-size: clamp(.9rem, 3.5vw, 1.05rem);
-      color: var(--muted);
-      max-width: 340px;
-      margin-bottom: 2rem;
+      font-size: clamp(.95rem, 3.6vw, 1.05rem);
+      color: var(--cinza);
+      margin: .6rem 0 1.8rem;
     }
-    .hero-actions {
-      display: flex; flex-direction: column; gap: .85rem;
-      width: 100%; max-width: 340px;
-    }
-
-    /* ─── HERO PHOTO STRIP (mobile: single / desktop: mosaic) ─ */
-    .hero-photos {
-      position: relative; z-index: 1;
-      width: 100%;
-    }
-    .hero-photos-single {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-    }
-    .hero-photos-mosaic { display: none; }
-
-    /* ─── BUTTONS ───────────────────────────────────────────── */
-    .btn-wa {
-      display: flex; align-items: center; justify-content: center; gap: .55rem;
-      background: #25D366; color: #fff;
-      padding: .95rem 1.5rem; border-radius: 8px;
-      font-weight: 700; font-size: 1rem; text-decoration: none;
-      min-height: 52px;
-      transition: box-shadow .2s, transform .2s;
+    .btn-principal {
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      width: 100%; min-height: 56px;
+      background: var(--dourado); color: #000;
+      font-size: 1.1rem; font-weight: 800;
+      border: none; border-radius: 10px;
+      text-decoration: none; letter-spacing: .02em;
+      box-shadow: 0 6px 22px rgba(200,134,10,.35);
+      transition: transform .15s, background .2s;
       -webkit-tap-highlight-color: transparent;
     }
-    .btn-wa:active { transform: scale(.98); }
-    .btn-wa:hover  { box-shadow: 0 8px 24px rgba(37,211,102,.3); }
+    .btn-principal:active { transform: scale(.97); }
+    .btn-principal:hover  { background: var(--dourado2); }
+    .hero-dica { margin-top: .9rem; font-size: .8rem; color: var(--cinza); }
 
-    .btn-ig {
-      display: flex; align-items: center; justify-content: center; gap: .55rem;
-      background: transparent; color: var(--cream);
-      padding: .95rem 1.5rem; border-radius: 8px;
-      border: 1px solid rgba(255,255,255,.15);
-      font-weight: 600; font-size: 1rem; text-decoration: none;
+    /* Entrada coreografada do hero (só no primeiro carregamento) */
+    @keyframes heroEntra {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hero-conteudo > * { animation: heroEntra .5s ease both; }
+    .hero-conteudo > *:nth-child(1) { animation-delay: 0s;    }
+    .hero-conteudo > *:nth-child(2) { animation-delay: .08s;  }
+    .hero-conteudo > *:nth-child(3) { animation-delay: .16s;  }
+    .hero-conteudo > *:nth-child(4) { animation-delay: .24s;  }
+    .hero-conteudo > *:nth-child(5) { animation-delay: .32s;  }
+    .hero-conteudo > *:nth-child(6) { animation-delay: .4s;   }
+    .hero-conteudo > *:nth-child(7) { animation-delay: .48s;  }
+
+    /* ════════════════ SEÇÕES (base) ════════════════ */
+    section { padding: 3.5rem 1.25rem; }
+    .caixa { max-width: 1100px; margin: 0 auto; }
+    .s-rotulo {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--dourado); margin-bottom: .4rem;
+    }
+    .s-titulo {
+      font-family: var(--fonte-rodeio);
+      font-size: clamp(1.7rem, 7vw, 3rem);
+      line-height: 1.1;
+    }
+
+    /* ════════════════ CATÁLOGO ════════════════ */
+    #catalogo { background: var(--preto2); border-bottom: 3px dashed rgba(200,134,10,.25); }
+
+    .busca-caixa {
+      display: flex; align-items: center; gap: .6rem;
+      background: var(--preto3); border: 1px solid var(--borda);
+      border-radius: 10px; padding: 0 1rem;
+      margin: 1.4rem 0 1rem;
       min-height: 52px;
+    }
+    .busca-caixa:focus-within { border-color: var(--dourado); }
+    .busca-caixa svg { flex-shrink: 0; color: var(--couro); }
+    .busca-caixa input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--creme); font-size: 1rem; font-family: inherit;
+      min-height: 50px;
+    }
+    .busca-caixa input::placeholder { color: var(--cinza); }
+
+    .filtros {
+      display: flex; gap: .5rem;
+      overflow-x: auto; padding-bottom: .5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filtros::-webkit-scrollbar { display: none; }
+    .filtro {
+      flex-shrink: 0;
+      min-height: 44px; padding: .5rem 1.1rem;
+      background: var(--preto3); color: var(--creme);
+      border: 1px solid var(--borda); border-radius: 100px;
+      font-size: .9rem; font-weight: 600;
+      transition: background .2s, border-color .2s, color .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .filtro:hover { border-color: var(--dourado); }
+    .filtro.ativo {
+      background: var(--dourado); color: #000;
+      border-color: var(--dourado); font-weight: 800;
+    }
+
+    /* Grade de produtos: 2 colunas no celular */
+    .grade {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .75rem; margin-top: 1.25rem;
+    }
+
+    .card {
+      background: var(--preto3);
+      border: 1px solid var(--borda);
+      border-radius: var(--raio);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .2s, border-color .2s;
+    }
+    .card:hover { transform: translateY(-3px); border-color: rgba(200,134,10,.5); }
+
+    /* Cards entram em cascata a cada renderização do catálogo */
+    @keyframes cardEntra { from { opacity: 0; transform: translateY(14px); } }
+    .card.entra { animation: cardEntra .4s ease both; }
+
+    .card-foto { position: relative; aspect-ratio: 1; background: #241d15; }
+    .card-foto img { width: 100%; height: 100%; object-fit: cover; }
+    .card.esgotado .card-foto img { filter: grayscale(1) brightness(.7); }
+
+    .selo {
+      position: absolute; top: .5rem; left: .5rem;
+      font-size: .66rem; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .3rem .6rem; border-radius: 6px;
+    }
+    .selo-esgotado { background: rgba(0,0,0,.85); color: var(--creme); border: 1px solid var(--couro); }
+    .selo-ultimas  { background: var(--dourado); color: #000; }
+
+    .card-corpo { padding: .75rem .75rem .85rem; display: flex; flex-direction: column; flex: 1; gap: .45rem; }
+    .card-cat {
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--dourado);
+    }
+    .card-nome {
+      font-size: .95rem; font-weight: 600; line-height: 1.3;
+      color: var(--creme);
+    }
+
+    /* Chips de tamanho — mínimo 40px de toque */
+    .tamanhos { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .chip {
+      min-width: 40px; min-height: 40px;
+      padding: 0 .55rem;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--preto2); color: var(--creme);
+      border: 1.5px solid var(--borda); border-radius: 8px;
+      font-size: .85rem; font-weight: 700;
+      transition: background .15s, border-color .15s, transform .1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .chip:active { transform: scale(.92); }
+    .chip.marcado {
+      background: var(--dourado); color: #000;
+      border-color: var(--dourado2);
+    }
+    .chip:disabled { opacity: .4; cursor: not-allowed; }
+
+    .card-preco {
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.4rem, 5.5vw, 1.7rem);
+      color: var(--dourado2); letter-spacing: .03em;
+      margin-top: auto; /* empurra preço + botão pro pé do card */
+    }
+
+    .card-btn {
+      width: 100%; min-height: 48px;
+      border: none; border-radius: 9px;
+      font-size: .92rem; font-weight: 800;
+      background: var(--dourado); color: #000;
+      transition: background .2s, transform .12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-btn:active:not(:disabled) { transform: scale(.97); }
+    .card-btn:hover:not(:disabled)  { background: var(--dourado2); }
+    .card-btn.aguarda { background: #3a3428; color: var(--cinza); cursor: not-allowed; }
+    .card-btn.confirmado { background: var(--verde); color: #fff; }
+    .card-btn:disabled.morto { background: #2a2a2a; color: #777; cursor: not-allowed; }
+
+    /* Skeleton de carregamento */
+    .skeleton {
+      background: var(--preto3); border: 1px solid var(--borda);
+      border-radius: var(--raio); overflow: hidden;
+    }
+    .skeleton .sk-foto { aspect-ratio: 1; }
+    .skeleton .sk-linha { height: 14px; border-radius: 6px; margin: .7rem .75rem 0; }
+    .skeleton .sk-linha.curta { width: 45%; }
+    .skeleton .sk-btn { height: 46px; border-radius: 9px; margin: .8rem .75rem .85rem; }
+    .sk-anim {
+      background: linear-gradient(100deg, #241d15 35%, #35291b 50%, #241d15 65%);
+      background-size: 250% 100%;
+      animation: brilho 1.4s infinite linear;
+    }
+    @keyframes brilho { to { background-position: -125% 0; } }
+
+    /* Aviso de erro / catálogo vazio */
+    .aviso {
+      grid-column: 1 / -1;
+      text-align: center;
+      background: var(--preto3); border: 1px dashed rgba(200,134,10,.4);
+      border-radius: var(--raio);
+      padding: 2.25rem 1.25rem;
+    }
+    .aviso p { font-size: 1.05rem; margin-bottom: 1.25rem; color: var(--creme); }
+    .aviso .btn-zap { max-width: 320px; margin: 0 auto; }
+
+    /* Botão verde WhatsApp (reutilizável) */
+    .btn-zap {
+      display: flex; align-items: center; justify-content: center; gap: .55rem;
+      background: var(--verde); color: #fff;
+      min-height: 52px; padding: .9rem 1.4rem;
+      border: none; border-radius: 10px;
+      font-size: 1.05rem; font-weight: 800; text-decoration: none;
+      transition: transform .15s, box-shadow .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-zap:active { transform: scale(.97); }
+    .btn-zap:hover  { box-shadow: 0 8px 24px rgba(37,211,102,.35); }
+
+    /* ════════════════ MARCAS ════════════════ */
+    #marcas { background: var(--preto); }
+    .marcas-grade { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: 1.5rem; }
+    .marca {
+      background: var(--preto3);
+      border: 2px solid var(--borda);
+      border-radius: var(--raio);
+      padding: 1.4rem .75rem; text-align: center;
+      /* moldura de ferro de marcar gado */
+      box-shadow: inset 0 0 0 4px var(--preto3), inset 0 0 0 5px rgba(200,134,10,.25);
+      transition: border-color .2s, transform .2s;
+    }
+    .marca:hover { border-color: var(--dourado); transform: translateY(-3px); }
+    .marca-nome { font-family: var(--fonte-titulo); font-size: 1.5rem; letter-spacing: .09em; }
+    .marca-sub  { font-size: .64rem; color: var(--cinza); letter-spacing: .14em; text-transform: uppercase; margin-top: .15rem; }
+
+    /* Stagger no reveal das marcas (cascata sutil) */
+    .marcas-grade .surge:nth-child(2) { transition-delay: .07s; }
+    .marcas-grade .surge:nth-child(3) { transition-delay: .14s; }
+    .marcas-grade .surge:nth-child(4) { transition-delay: .21s; }
+    .marcas-grade .surge:nth-child(5) { transition-delay: .28s; }
+
+    /* ════════════════ COMO COMPRAR ════════════════ */
+    #como-comprar { background: var(--preto2); border-top: 3px dashed rgba(200,134,10,.25); border-bottom: 3px dashed rgba(200,134,10,.25); }
+    .passos { display: grid; gap: .8rem; margin-top: 1.5rem; }
+    .passo {
+      background: var(--preto3); border: 1px solid var(--borda);
+      border-left: 4px solid var(--dourado);
+      border-radius: var(--raio); padding: 1.3rem 1.1rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .passo-num {
+      font-family: var(--fonte-rodeio);
+      font-size: 2rem; color: var(--dourado); line-height: 1;
+      flex-shrink: 0;
+    }
+    .passo-titulo { font-weight: 800; font-size: 1.02rem; margin-bottom: .2rem; }
+    .passo-desc   { font-size: .88rem; color: var(--cinza); }
+
+    /* ════════════════ SOBRE ════════════════ */
+    #sobre { background: var(--preto); }
+    .sobre-texto p { color: var(--cinza); font-size: .95rem; margin-bottom: .9rem; }
+    .sobre-texto p strong { color: var(--creme); }
+    .sobre-numeros { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: 1.6rem; }
+    .num-card {
+      background: var(--preto3); border: 1px solid var(--borda);
+      border-radius: var(--raio); padding: 1.15rem .75rem; text-align: center;
+    }
+    .num-valor { display: block; font-family: var(--fonte-titulo); font-size: 2.1rem; color: var(--dourado); line-height: 1; }
+    .num-rotulo { display: block; font-size: .68rem; color: var(--cinza); text-transform: uppercase; letter-spacing: .1em; margin-top: .3rem; }
+
+    /* ════════════════ LOOKBOOK ════════════════ */
+    #lookbook { background: var(--preto2); border-top: 3px dashed rgba(200,134,10,.25); }
+    .look-grade { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1.5rem; }
+    .look-grade img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      border-radius: var(--raio);
+      border: 1px solid var(--borda);
+      transition: transform .3s;
+    }
+    .look-grade img:first-child { grid-column: span 2; aspect-ratio: 16/10; }
+    .look-grade img:hover { transform: scale(1.02); }
+
+    /* ════════════════ DIFERENCIAIS ════════════════ */
+    #diferenciais { background: var(--preto); border-top: 3px dashed rgba(200,134,10,.25); }
+    .dif-grade { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: 1.5rem; }
+    .dif {
+      background: var(--preto3); border: 1px solid var(--borda);
+      border-top: 3px solid var(--dourado);
+      border-radius: var(--raio); padding: 1.3rem 1rem;
+    }
+    .dif-icone  { font-size: 1.7rem; margin-bottom: .6rem; }
+    .dif-titulo { font-weight: 800; font-size: .98rem; margin-bottom: .3rem; line-height: 1.25; }
+    .dif-desc   { font-size: .82rem; color: var(--cinza); }
+
+    /* ════════════════ FAQ ════════════════ */
+    #faq { background: var(--preto2); border-top: 3px dashed rgba(200,134,10,.25); }
+    .faq-lista { display: grid; gap: .7rem; margin-top: 1.5rem; max-width: 760px; }
+    .faq-item {
+      background: var(--preto3); border: 1px solid var(--borda);
+      border-radius: var(--raio); overflow: hidden;
+      transition: border-color .2s;
+    }
+    .faq-item.aberto { border-color: rgba(200,134,10,.5); }
+    .faq-pergunta {
+      width: 100%; min-height: 48px;
+      display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+      background: none; border: none;
+      padding: .9rem 1.1rem;
+      color: var(--creme); text-align: left;
+      font-size: .98rem; font-weight: 700; line-height: 1.35;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .faq-icone {
+      flex-shrink: 0;
+      color: var(--dourado); font-size: 1.5rem; font-weight: 400; line-height: 1;
+      transition: transform .3s;
+    }
+    .faq-item.aberto .faq-icone { transform: rotate(45deg); } /* + vira × */
+    .faq-caixa {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows .3s ease;
+    }
+    .faq-item.aberto .faq-caixa { grid-template-rows: 1fr; }
+    .faq-resposta {
+      overflow: hidden;
+      padding: 0 1.1rem;
+      color: var(--cinza); font-size: .9rem;
+      transition: padding-bottom .3s ease;
+    }
+    .faq-item.aberto .faq-resposta { padding-bottom: 1rem; }
+
+    /* ════════════════ CONTATO + FOOTER ════════════════ */
+    #contato { background: var(--preto2); text-align: center; border-top: 3px dashed rgba(200,134,10,.25); }
+    .contato-caixa { max-width: 460px; margin: 0 auto; }
+    .contato-caixa > p { color: var(--cinza); margin-bottom: 1.6rem; }
+    .contato-acoes { display: flex; flex-direction: column; gap: .8rem; }
+    .btn-insta {
+      display: flex; align-items: center; justify-content: center; gap: .55rem;
+      background: transparent; color: var(--creme);
+      min-height: 52px; padding: .9rem 1.4rem;
+      border: 1.5px solid rgba(245,240,232,.25); border-radius: 10px;
+      font-size: 1.05rem; font-weight: 700; text-decoration: none;
       transition: border-color .2s, background .2s;
       -webkit-tap-highlight-color: transparent;
     }
-    .btn-ig:active  { background: rgba(200,134,10,.08); }
-    .btn-ig:hover   { border-color: var(--gold); background: rgba(200,134,10,.07); }
+    .btn-insta:hover { border-color: var(--dourado); background: rgba(200,134,10,.08); }
 
-    /* ─── SECTIONS ──────────────────────────────────────────── */
-    section { padding: 4rem 1.25rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
-
-    .s-label {
-      font-size: .62rem; font-weight: 700;
-      letter-spacing: .3em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: .5rem;
-    }
-    .s-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.4rem, 8vw, 4.5rem);
-      line-height: .92; margin-bottom: .75rem;
-    }
-    .s-divider { width: 44px; height: 3px; background: var(--gold); margin: 1rem 0 1.5rem; }
-
-    /* ─── SOBRE ─────────────────────────────────────────────── */
-    #sobre { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .sobre-text p { color: var(--muted); font-size: .95rem; margin-bottom: .9rem; }
-    .sobre-text p strong { color: var(--cream); }
-
-    .stats {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: .75rem; margin-top: 2rem;
-    }
-    .stat {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.25rem 1rem;
-      text-align: center;
-    }
-    .stat-n {
-      display: block; font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.4rem; color: var(--gold); line-height: 1;
-    }
-    .stat-l {
-      display: block; font-size: .68rem; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .1em; margin-top: .25rem;
-    }
-
-    /* ─── MARCAS ─────────────────────────────────────────────── */
-    #marcas { background: var(--bg); }
-    .marcas-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: .75rem; margin-top: 2rem;
-    }
-    .marca {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.5rem 1rem;
-      text-align: center;
-      transition: border-color .25s, transform .25s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .marca:active { transform: scale(.97); }
-    .marca:hover  { border-color: var(--gold); transform: translateY(-4px); }
-    .marca-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: .08em; }
-    .marca-sub  { font-size: .62rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-top: .2rem; }
-
-    /* ─── PRODUTOS ───────────────────────────────────────────── */
-    #produtos { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .produtos-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
-    .produto {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
-      display: grid; grid-template-columns: 130px 1fr;
-      transition: border-color .25s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .produto:active { border-color: var(--gold); }
-    .produto-thumb {
-      aspect-ratio: 1;
-      overflow: hidden; flex-shrink: 0;
-    }
-    .produto-thumb img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform .4s;
-    }
-    .produto:hover .produto-thumb img { transform: scale(1.06); }
-    .produto-body { padding: 1rem 1.1rem; display: flex; flex-direction: column; justify-content: center; }
-    .produto-tag  { font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
-    .produto-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; margin-bottom: .3rem; line-height: 1.1; }
-    .produto-desc  { font-size: .8rem; color: var(--muted); line-height: 1.5; }
-    .produto-cta {
-      display: inline-flex; align-items: center; gap: .35rem;
-      margin-top: .75rem; font-size: .78rem; font-weight: 700;
-      color: var(--gold); text-decoration: none;
-      transition: gap .2s;
-    }
-    .produto-cta:hover { gap: .6rem; }
-
-    /* ─── LOOKBOOK ───────────────────────────────────────────── */
-    #lookbook { background: var(--bg); }
-    .look-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: .6rem; margin-top: 2rem;
-    }
-    .look-grid img {
-      width: 100%; aspect-ratio: 3/4; object-fit: cover;
-      border-radius: var(--radius);
-      transition: transform .35s;
-    }
-    .look-grid img:first-child {
-      grid-column: span 2;
-      aspect-ratio: 16/9;
-    }
-    .look-grid img:hover { transform: scale(1.02); }
-
-    /* ─── DIFERENCIAIS ───────────────────────────────────────── */
-    #diferenciais { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .dif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 2rem; }
-    .dif {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-top: 3px solid var(--gold);
-      border-radius: var(--radius); padding: 1.5rem 1.1rem;
-    }
-    .dif-icon  { font-size: 1.8rem; margin-bottom: .75rem; }
-    .dif-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; margin-bottom: .4rem; line-height: 1.1; }
-    .dif-desc  { font-size: .8rem; color: var(--muted); line-height: 1.5; }
-
-    /* ─── CONTATO ────────────────────────────────────────────── */
-    #contato { background: var(--bg); text-align: center; }
-    .contato-inner { max-width: 440px; margin: 0 auto; }
-    .contato-inner p { color: var(--muted); font-size: .95rem; margin-bottom: 2rem; }
-    .contato-actions { display: flex; flex-direction: column; gap: .85rem; }
-
-    /* ─── FOOTER ─────────────────────────────────────────────── */
     footer {
-      background: var(--bg2); border-top: 1px solid var(--border);
-      padding: 1.75rem 1.25rem; text-align: center;
-      color: var(--muted); font-size: .8rem;
+      background: var(--preto); border-top: 1px solid var(--borda);
+      padding: 1.8rem 1.25rem 6.5rem; /* espaço extra pros botões flutuantes */
+      text-align: center; color: var(--cinza); font-size: .82rem;
     }
-    footer a { color: var(--gold); text-decoration: none; }
+    footer a { color: var(--dourado); text-decoration: none; }
 
-    /* ─── FADE-IN ANIMATION ──────────────────────────────────── */
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+    /* ════════════════ FLUTUANTES ════════════════ */
+    /* WhatsApp geral — canto inferior ESQUERDO */
+    .flut-zap {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 800;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--verde); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,.45);
+      text-decoration: none;
+      transition: transform .15s;
+    }
+    .flut-zap:active { transform: scale(.92); }
 
-    /* ─── TABLET (600px+) ────────────────────────────────────── */
+    /* Sacola — canto inferior DIREITO (só aparece com item) */
+    .flut-sacola {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 800;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--dourado); color: #000;
+      border: none;
+      display: none; /* escondida até ter item */
+      align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,.5);
+      transition: transform .15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .flut-sacola.visivel { display: flex; }
+    .flut-sacola:active { transform: scale(.92); }
+    .flut-sacola .badge {
+      position: absolute; top: -4px; right: -4px;
+      min-width: 24px; height: 24px; padding: 0 6px;
+      background: #d3302f; color: #fff;
+      border-radius: 100px;
+      font-size: .8rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--preto);
+    }
+    .flut-sacola .badge.pulsa { animation: pulsa .45s ease; }
+    @keyframes pulsa {
+      0%   { transform: scale(1); }
+      45%  { transform: scale(1.45); }
+      100% { transform: scale(1); }
+    }
+
+    /* ════════════════ PAINEL DA SACOLA ════════════════ */
+    .veu {
+      position: fixed; inset: 0; z-index: 950;
+      background: rgba(0,0,0,.65);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+    }
+    .veu.aberto { opacity: 1; pointer-events: auto; }
+
+    .sacola-painel {
+      position: fixed; z-index: 960;
+      left: 0; right: 0; bottom: 0;
+      max-height: 86svh;
+      background: var(--preto2);
+      border-top: 3px solid var(--dourado);
+      border-radius: 18px 18px 0 0;
+      transform: translateY(105%);
+      transition: transform .3s ease;
+      display: flex; flex-direction: column;
+    }
+    .sacola-painel.aberto { transform: translateY(0); }
+
+    .sacola-topo {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.25rem .75rem;
+      border-bottom: 2px dashed rgba(200,134,10,.3);
+    }
+    .sacola-topo h2 { font-family: var(--fonte-titulo); font-size: 1.5rem; letter-spacing: .06em; }
+    .sacola-fechar {
+      background: none; border: none; color: var(--creme);
+      min-width: 44px; min-height: 44px;
+      font-size: 1.6rem; line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sacola-itens { flex: 1; overflow-y: auto; padding: .75rem 1.25rem; }
+    .sacola-vazia { text-align: center; color: var(--cinza); padding: 2rem 0; }
+
+    .item {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .8rem 0;
+      border-bottom: 1px solid var(--borda);
+    }
+    .item-info { flex: 1; min-width: 0; }
+    .item-nome { font-weight: 700; font-size: .92rem; line-height: 1.3; }
+    .item-det  { font-size: .8rem; color: var(--cinza); margin-top: .1rem; }
+    .item-preco { font-family: var(--fonte-titulo); font-size: 1.15rem; color: var(--dourado2); margin-top: .15rem; }
+
+    .item-qtd { display: flex; align-items: center; gap: .15rem; flex-shrink: 0; }
+    .qtd-btn {
+      width: 40px; height: 40px;
+      background: var(--preto3); color: var(--creme);
+      border: 1px solid var(--borda); border-radius: 8px;
+      font-size: 1.15rem; font-weight: 800;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qtd-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .qtd-num { min-width: 30px; text-align: center; font-weight: 800; }
+
+    .item-remover {
+      background: none; border: none; color: var(--cinza);
+      min-width: 42px; min-height: 42px; font-size: 1.15rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .item-remover:hover { color: #e05555; }
+
+    .sacola-pe {
+      padding: 1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
+      border-top: 2px dashed rgba(200,134,10,.3);
+    }
+    .sacola-total {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: .85rem;
+    }
+    .sacola-total .rotulo { font-size: .95rem; color: var(--cinza); }
+    .sacola-total .valor  { font-family: var(--fonte-titulo); font-size: 1.9rem; color: var(--dourado2); }
+    .sacola-pe .btn-zap { width: 100%; min-height: 56px; font-size: 1.1rem; }
+
+    /* ════════════════ REVEAL ON SCROLL ════════════════ */
+    .surge { opacity: 0; transform: translateY(22px); transition: opacity .55s ease, transform .55s ease; }
+    .surge.visivel { opacity: 1; transform: none; }
+
+    /* ════════════════ MOVIMENTO REDUZIDO ════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .surge { opacity: 1; transform: none; }
+      .hero-fundo { transform: none !important; }
+    }
+
+    /* ════════════════ TABLET (600px+) ════════════════ */
     @media (min-width: 600px) {
-      nav { padding: 0 2rem; }
-      section { padding: 5rem 2rem; }
-
-      .hero-content { padding: 3rem 2.5rem 2.5rem; max-width: 640px; margin: 0 auto; }
-      .hero-logo { width: 160px; height: 160px; }
-      .hero-actions { flex-direction: row; justify-content: center; max-width: none; }
-      .btn-wa, .btn-ig { width: auto; padding: .85rem 1.75rem; }
-
-      .hero-photos-single  { display: none; }
-      .hero-photos-mosaic  {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: .6rem;
-        padding: 0 2rem 2.5rem;
-      }
-      .hero-photos-mosaic img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--radius); }
-      .hero-photos-mosaic img:first-child { aspect-ratio: 16/9; grid-column: span 2; }
-
-      .marcas-grid { grid-template-columns: repeat(3, 1fr); }
-      .produtos-grid { display: grid; grid-template-columns: 1fr 1fr; }
-      .produto { display: flex; flex-direction: column; grid-template-columns: unset; }
-      .produto-thumb { aspect-ratio: 4/3; }
-      .look-grid { grid-template-columns: 1fr 1fr; }
-      .look-grid img:first-child { aspect-ratio: 16/9; }
-      .contato-actions { flex-direction: row; justify-content: center; }
+      .nav { padding: 0 2rem; }
+      section { padding: 4.5rem 2rem; }
+      .grade { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+      .marcas-grade { grid-template-columns: repeat(3, 1fr); }
+      .passos { grid-template-columns: repeat(3, 1fr); }
+      .passo { flex-direction: column; }
+      .look-grade { grid-template-columns: repeat(2, 1fr); }
+      .dif-grade { grid-template-columns: repeat(2, 1fr); }
+      .contato-acoes { flex-direction: row; justify-content: center; }
+      .btn-principal { max-width: 340px; }
+      footer { padding-bottom: 2rem; }
     }
 
-    /* ─── DESKTOP (960px+) ───────────────────────────────────── */
+    /* ════════════════ DESKTOP (960px+) ════════════════ */
     @media (min-width: 960px) {
-      nav { height: 64px; }
-      nav { padding: 0 2.5rem; }
-
-      /* Show desktop nav links, hide hamburger */
-      .hamburger { display: none; }
+      .nav { height: 66px; padding: 0 2.5rem; }
+      .hamburguer { display: none; }
       .nav-links {
-        display: flex !important;
-        position: static;
-        flex-direction: row;
-        background: none;
-        border: none;
-        padding: 0;
-        gap: 2rem;
+        display: flex; position: static;
+        flex-direction: row; margin-left: auto;
+        background: none; border: none; padding: 0; gap: 1.8rem;
       }
-      .nav-links a { border: none; padding: 0; font-size: .78rem; }
+      .nav-links a { min-height: 0; border: none; font-size: .8rem; }
+      .hero { padding-top: calc(66px + 3rem); }
+      section { padding: 5.5rem 2rem; }
+      .grade { grid-template-columns: repeat(4, 1fr); }
+      .marcas-grade { grid-template-columns: repeat(5, 1fr); }
+      .sobre-caixa { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+      .sobre-numeros { margin-top: 0; }
+      .look-grade { grid-template-columns: 2fr 1fr 1fr; }
+      .look-grade img { aspect-ratio: unset; height: 380px; }
+      .look-grade img:first-child { grid-column: unset; }
+      .dif-grade { grid-template-columns: repeat(4, 1fr); }
 
-      .hero {
-        flex-direction: row;
-        padding-top: 64px;
-        min-height: 100svh;
-        align-items: center;
+      /* Sacola vira gaveta lateral no desktop */
+      .sacola-painel {
+        left: auto; top: 0; bottom: 0; right: 0;
+        width: 420px; max-height: none;
+        border-radius: 0;
+        border-top: none; border-left: 3px solid var(--dourado);
+        transform: translateX(105%);
       }
-      .hero-content {
-        flex: 1; padding: 4rem 3rem 4rem 4rem;
-        text-align: left; align-items: flex-start;
-        max-width: none;
-      }
-      .hero-logo { width: 180px; height: 180px; }
-      .hero-sub  { max-width: 440px; }
-      .hero-actions { flex-direction: row; }
-
-      .hero-photos { flex: 1; padding: 4rem 4rem 4rem 0; }
-      .hero-photos-single { display: none; }
-      .hero-photos-mosaic {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: .75rem;
-        padding: 0;
-        height: 100%;
-      }
-      .hero-photos-mosaic img {
-        border-radius: var(--radius);
-        transition: transform .35s;
-      }
-      .hero-photos-mosaic img:hover { transform: scale(1.03); }
-      .hero-photos-mosaic img:first-child { aspect-ratio: unset; height: 100%; min-height: 260px; }
-      .hero-photos-mosaic img:not(:first-child) { aspect-ratio: unset; height: calc(50% - .375rem); min-height: 200px; }
-      .hero-photos-mosaic { flex-direction: column; }
-      .hero-photos-mosaic img:not(:first-child) { height: 240px; }
-
-      section { padding: 6rem 2rem; }
-
-      .sobre-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-      .stats { margin-top: 0; }
-      .marcas-grid { grid-template-columns: repeat(5, 1fr); }
-      .produtos-grid { grid-template-columns: repeat(3, 1fr); }
-      .look-grid { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 400px; }
-      .look-grid img { border-radius: 0; height: 100%; aspect-ratio: unset; }
-      .look-grid img:first-child { grid-column: unset; aspect-ratio: unset; border-radius: var(--radius) 0 0 var(--radius); }
-      .look-grid img:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
-      .dif-grid { grid-template-columns: repeat(4, 1fr); }
-      .contato-inner { max-width: 580px; }
+      .sacola-painel.aberto { transform: translateX(0); }
     }
   </style>
 </head>
 <body>
 
-<!-- ─── NAV ────────────────────────────────────────────────────── -->
-<nav id="nav">
-  <a href="#" class="nav-brand">
-    <img src="assets/logo.png" alt="Ranch UAI" />
-    <span class="nav-brand-text">Ranch <span>UAI</span></span>
-  </a>
+<!-- Acessibilidade: pula direto pro catálogo (aparece só no foco) -->
+<a href="#catalogo" class="pular-link">Pular para o catálogo</a>
 
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#sobre"       onclick="closeMenu()">Sobre</a></li>
-    <li><a href="#marcas"      onclick="closeMenu()">Marcas</a></li>
-    <li><a href="#produtos"    onclick="closeMenu()">Produtos</a></li>
-    <li><a href="#contato"     onclick="closeMenu()">Contato</a></li>
-  </ul>
+<!-- Barra de progresso do scroll -->
+<div class="progresso" id="progresso" aria-hidden="true"></div>
 
-  <div class="nav-right">
-    <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
-       target="_blank" rel="noopener" class="nav-cta">Comprar agora</a>
-    <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+<!-- ══════════════════ NAV FIXA ══════════════════ -->
+<header>
+  <nav class="nav" aria-label="Navegação principal">
+    <a href="#inicio" class="nav-marca" aria-label="Ranch UAI — voltar ao início">
+      <img src="assets/logo.png" alt="Logo Ranch UAI — crânio de boi longhorn" />
+      <span class="nav-marca-txt">Ranch <span>UAI</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#catalogo">Produtos</a></li>
+      <li><a href="#marcas">Marcas</a></li>
+      <li><a href="#como-comprar">Como comprar</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <button class="hamburguer" id="hamburguer" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
-  </div>
-</nav>
+  </nav>
+</header>
 
-<!-- ─── HERO ────────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero-glow"></div>
+<main>
 
-  <div class="hero-content">
-    <img src="assets/logo.png" alt="Ranch UAI" class="hero-logo" />
-    <div class="hero-pill">🇧🇷 🇺🇸 Produtos Nacionais e Importados</div>
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-fundo" id="heroFundo" aria-hidden="true"></div>
+  <div class="hero-conteudo">
+    <img src="assets/logo.png" alt="Logo Ranch UAI" class="hero-logo" />
+    <p class="hero-selo">🤠 Moda Country · Nacional &amp; Importado</p>
     <h1>Ranch <em>UAI</em></h1>
-    <p class="hero-sub">A marca do Home Cuiudo — moda country autêntica com as melhores marcas do mercado. Envio para todo o Brasil.</p>
-    <div class="hero-actions">
-      <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
-         target="_blank" rel="noopener" class="btn-wa">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
-        Comprar pelo WhatsApp
-      </a>
-      <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener" class="btn-ig">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        Ver no Instagram
-      </a>
-    </div>
-  </div>
-
-  <!-- foto única no mobile -->
-  <div class="hero-photos">
-    <img src="assets/foto-casal.jpg" alt="Ranch UAI" class="hero-photos-single" />
-    <div class="hero-photos-mosaic">
-      <img src="assets/foto-casal.jpg"     alt="Casal Ranch UAI" />
-      <img src="assets/foto-bones.jpg"     alt="Bonés TUFF" />
-      <img src="assets/foto-camisetas.jpg" alt="Camisetas TXC" />
-    </div>
+    <p class="hero-slogan">A marca do Home Cuiudo</p>
+    <p class="hero-sub">Roupa boa, preço justo e entrega no Brasil inteiro. Escolheu, pediu no zap, chegou. Simples assim, uai.</p>
+    <a href="#catalogo" class="btn-principal">Ver produtos ↓</a>
+    <p class="hero-dica">Sem cadastro. Pedido direto no WhatsApp.</p>
   </div>
 </section>
 
-<!-- ─── SOBRE ───────────────────────────────────────────────────── -->
-<section id="sobre">
-  <div class="container">
-    <div class="sobre-inner">
-      <div class="sobre-text">
-        <div class="s-label">Quem somos</div>
-        <h2 class="s-title">A Marca do<br>Home Cuiudo</h2>
-        <div class="s-divider"></div>
-        <p>Ranch UAI é uma loja country especializada em moda autêntica — <strong>produtos nacionais e importados</strong> para quem vive e respira o estilo country.</p>
-        <p>Trabalhamos com as principais marcas: <strong>Ariat, TXC, TUFF, Cinch e King Farm</strong>. Do chapéu à calça, do tênis ao cinto — temos tudo que o country lover precisa.</p>
-        <p>Atendimento personalizado e <strong>envio para todo o Brasil</strong>.</p>
-      </div>
-      <div class="stats">
-        <div class="stat reveal"><span class="stat-n">+1.2K</span><span class="stat-l">Seguidores</span></div>
-        <div class="stat reveal"><span class="stat-n">5+</span><span class="stat-l">Marcas premium</span></div>
-        <div class="stat reveal"><span class="stat-n">100%</span><span class="stat-l">Todo o Brasil</span></div>
-        <div class="stat reveal"><span class="stat-n">🤠</span><span class="stat-l">Home Cuiudo</span></div>
-      </div>
+<!-- ══════════════════ CATÁLOGO DINÂMICO ══════════════════ -->
+<section id="catalogo" aria-label="Catálogo de produtos">
+  <div class="caixa">
+    <p class="s-rotulo">Catálogo</p>
+    <h2 class="s-titulo">Escolha o seu modão</h2>
+    <hr class="costura esq" />
+
+    <!-- Busca por nome -->
+    <div class="busca-caixa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input type="search" id="busca" placeholder="Buscar por nome… (ex: boné TUFF)" aria-label="Buscar produto por nome" autocomplete="off" />
     </div>
+
+    <!-- Filtros de categoria (gerados pelo JS) -->
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar por categoria"></div>
+
+    <!-- Grade de produtos (skeleton até o CSV chegar) -->
+    <div class="grade" id="grade" aria-live="polite"></div>
   </div>
 </section>
 
-<!-- ─── MARCAS ──────────────────────────────────────────────────── -->
+<!-- ══════════════════ MARCAS ══════════════════ -->
 <section id="marcas">
-  <div class="container">
-    <div class="s-label">O que temos</div>
-    <h2 class="s-title">As Melhores<br>Marcas do Mercado</h2>
-    <div class="marcas-grid">
-      <div class="marca reveal"><div class="marca-name">ARIAT</div><div class="marca-sub">International</div></div>
-      <div class="marca reveal"><div class="marca-name">TXC</div><div class="marca-sub">United Styles</div></div>
-      <div class="marca reveal"><div class="marca-name">TUFF</div><div class="marca-sub">Since 2015</div></div>
-      <div class="marca reveal"><div class="marca-name">CINCH</div><div class="marca-sub">Denim</div></div>
-      <div class="marca reveal"><div class="marca-name">KING FARM</div><div class="marca-sub">Country</div></div>
+  <div class="caixa">
+    <p class="s-rotulo">Marcas parceiras</p>
+    <h2 class="s-titulo">Só marca arretada</h2>
+    <hr class="costura esq" />
+    <div class="marcas-grade">
+      <div class="marca surge"><div class="marca-nome">ARIAT</div><div class="marca-sub">International</div></div>
+      <div class="marca surge"><div class="marca-nome">TXC</div><div class="marca-sub">United Styles</div></div>
+      <div class="marca surge"><div class="marca-nome">TUFF</div><div class="marca-sub">Since 2015</div></div>
+      <div class="marca surge"><div class="marca-nome">CINCH</div><div class="marca-sub">Denim</div></div>
+      <div class="marca surge"><div class="marca-nome">KING FARM</div><div class="marca-sub">Country</div></div>
     </div>
   </div>
 </section>
 
-<!-- ─── PRODUTOS ────────────────────────────────────────────────── -->
-<section id="produtos">
-  <div class="container">
-    <div class="s-label">O que oferecemos</div>
-    <h2 class="s-title">Nossos<br>Produtos</h2>
-    <div class="produtos-grid">
-
-      <div class="produto reveal">
-        <div class="produto-thumb">
-          <img src="assets/foto-camisetas.jpg" alt="Camisetas Country" loading="lazy" />
-        </div>
-        <div class="produto-body">
-          <div class="produto-tag">Vestuário</div>
-          <div class="produto-title">Camisetas Country</div>
-          <div class="produto-desc">Nacionais e importadas das melhores marcas — corte perfeito para o estilo country.</div>
-          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
-             target="_blank" rel="noopener" class="produto-cta">Pedir agora →</a>
+<!-- ══════════════════ COMO COMPRAR ══════════════════ -->
+<section id="como-comprar">
+  <div class="caixa">
+    <p class="s-rotulo">Sem mistério</p>
+    <h2 class="s-titulo">Como comprar</h2>
+    <hr class="costura esq" />
+    <div class="passos">
+      <div class="passo surge">
+        <div class="passo-num" aria-hidden="true">1</div>
+        <div>
+          <p class="passo-titulo">👕 Escolha a peça</p>
+          <p class="passo-desc">Passeia pelo catálogo, marca o tamanho e joga na sacola. Rapidinho.</p>
         </div>
       </div>
-
-      <div class="produto reveal">
-        <div class="produto-thumb">
-          <img src="assets/foto-bones.jpg" alt="Bonés e Chapéus" loading="lazy" />
-        </div>
-        <div class="produto-body">
-          <div class="produto-tag">Acessórios</div>
-          <div class="produto-title">Bonés & Chapéus</div>
-          <div class="produto-desc">Trucker hats e bonés estruturados — TUFF, Ariat, Cinch e mais.</div>
-          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
-             target="_blank" rel="noopener" class="produto-cta">Pedir agora →</a>
+      <div class="passo surge">
+        <div class="passo-num" aria-hidden="true">2</div>
+        <div>
+          <p class="passo-titulo">💬 Finalize no WhatsApp</p>
+          <p class="passo-desc">A sacola monta a mensagem prontinha. É só mandar que a gente responde na hora.</p>
         </div>
       </div>
-
-      <div class="produto reveal">
-        <div class="produto-thumb">
-          <img src="assets/foto-look.jpg" alt="Look Country" loading="lazy" />
-        </div>
-        <div class="produto-body">
-          <div class="produto-tag">Look Completo</div>
-          <div class="produto-title">Calças & Looks</div>
-          <div class="produto-desc">Calças jeans premium e looks completos do chapéu ao cinto.</div>
-          <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
-             target="_blank" rel="noopener" class="produto-cta">Pedir agora →</a>
+      <div class="passo surge">
+        <div class="passo-num" aria-hidden="true">3</div>
+        <div>
+          <p class="passo-titulo">📦 Receba em casa</p>
+          <p class="passo-desc">Enviamos pra todo o Brasil. Da roça pra porteira da sua casa, uai.</p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ─── LOOKBOOK ─────────────────────────────────────────────────── -->
+<!-- ══════════════════ SOBRE ══════════════════ -->
+<section id="sobre">
+  <div class="caixa sobre-caixa">
+    <div class="sobre-texto">
+      <p class="s-rotulo">Quem somos</p>
+      <h2 class="s-titulo">A marca do Home Cuiudo</h2>
+      <hr class="costura esq" />
+      <p>A <strong>Ranch UAI</strong> nasceu do jeito certo: do gosto pela vida na roça, pelo rodeio e pelo modão de viola. Aqui não tem frescura — tem roupa country <strong>de verdade</strong>, nacional e importada.</p>
+      <p>Trabalhamos com as marcas que o povo do agro respeita: <strong>Ariat, TXC, TUFF, Cinch e King Farm</strong>. Do boné ao cinto, da camiseta à calça — tudo pro seu estilo.</p>
+      <p>Atendimento no <strong>WhatsApp</strong>, papo reto e <strong>envio pra todo o Brasil</strong>. Chega junto! 🤠</p>
+    </div>
+    <div class="sobre-numeros">
+      <div class="num-card surge"><span class="num-valor">+1.2K</span><span class="num-rotulo">Seguidores</span></div>
+      <div class="num-card surge"><span class="num-valor">5</span><span class="num-rotulo">Marcas premium</span></div>
+      <div class="num-card surge"><span class="num-valor">100%</span><span class="num-rotulo">Brasil atendido</span></div>
+      <div class="num-card surge"><span class="num-valor">🤠</span><span class="num-rotulo">Home Cuiudo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ LOOKBOOK ══════════════════ -->
 <section id="lookbook">
-  <div class="container">
-    <div class="s-label">Lookbook</div>
-    <h2 class="s-title">O Estilo<br>Ranch UAI</h2>
-    <div class="look-grid">
-      <img src="assets/foto-casal.jpg" alt="Casal Ranch UAI" loading="lazy" />
-      <img src="assets/foto-look.jpg"  alt="Look masculino"  loading="lazy" />
-      <img src="assets/foto-bones.jpg" alt="Coleção bonés"   loading="lazy" />
+  <div class="caixa">
+    <p class="s-rotulo">Lookbook</p>
+    <h2 class="s-titulo">O estilo Ranch UAI</h2>
+    <hr class="costura esq" />
+    <div class="look-grade">
+      <img src="assets/foto-casal.jpg" alt="Casal vestindo moda country Ranch UAI" loading="lazy" />
+      <img src="assets/foto-look.jpg" alt="Look country masculino completo" loading="lazy" />
+      <img src="assets/foto-bones.jpg" alt="Coleção de bonés country TUFF e Ariat" loading="lazy" />
+      <img src="assets/foto-camisetas.jpg" alt="Camisetas country TXC penduradas" loading="lazy" />
     </div>
   </div>
 </section>
 
-<!-- ─── DIFERENCIAIS ─────────────────────────────────────────────── -->
+<!-- ══════════════════ DIFERENCIAIS ══════════════════ -->
 <section id="diferenciais">
-  <div class="container">
-    <div class="s-label">Por que escolher</div>
-    <h2 class="s-title">Nossos<br>Diferenciais</h2>
-    <div class="dif-grid">
-      <div class="dif reveal">
-        <div class="dif-icon">🇧🇷🇺🇸</div>
-        <div class="dif-title">Nacional & Importado</div>
-        <div class="dif-desc">As melhores marcas country do Brasil e dos EUA em um só lugar.</div>
+  <div class="caixa">
+    <p class="s-rotulo">Por que a Ranch UAI</p>
+    <h2 class="s-titulo">Nossos diferenciais</h2>
+    <hr class="costura esq" />
+    <div class="dif-grade">
+      <div class="dif surge">
+        <div class="dif-icone" aria-hidden="true">🇧🇷🇺🇸</div>
+        <p class="dif-titulo">Nacional &amp; Importado</p>
+        <p class="dif-desc">O melhor do country do Brasil e dos EUA, tudo num lugar só.</p>
       </div>
-      <div class="dif reveal">
-        <div class="dif-icon">🚚</div>
-        <div class="dif-title">Envio para Todo o Brasil</div>
-        <div class="dif-desc">Comprou, recebeu. Entregamos em todo o território nacional.</div>
+      <div class="dif surge">
+        <div class="dif-icone" aria-hidden="true">🚚</div>
+        <p class="dif-titulo">Envio pra todo o Brasil</p>
+        <p class="dif-desc">Comprou, a gente despacha. Chega na sua porteira em qualquer canto.</p>
       </div>
-      <div class="dif reveal">
-        <div class="dif-icon">💬</div>
-        <div class="dif-title">Atendimento pelo WhatsApp</div>
-        <div class="dif-desc">Direto e personalizado. Tire dúvidas e feche o pedido na hora.</div>
+      <div class="dif surge">
+        <div class="dif-icone" aria-hidden="true">💬</div>
+        <p class="dif-titulo">Atendimento no WhatsApp</p>
+        <p class="dif-desc">Papo reto, sem robô enrolando. Tira a dúvida e fecha o pedido na hora.</p>
       </div>
-      <div class="dif reveal">
-        <div class="dif-icon">⭐</div>
-        <div class="dif-title">Clientes Satisfeitos</div>
-        <div class="dif-desc">Veja os destaques "Clientes" e "Envios" no Instagram.</div>
+      <div class="dif surge">
+        <div class="dif-icone" aria-hidden="true">⭐</div>
+        <p class="dif-titulo">Clientes satisfeitos</p>
+        <p class="dif-desc">Confere os destaques "Clientes" e "Envios" lá no nosso Instagram.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── CONTATO ──────────────────────────────────────────────────── -->
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section id="faq">
+  <div class="caixa">
+    <p class="s-rotulo">Dúvidas</p>
+    <h2 class="s-titulo">Perguntas frequentes</h2>
+    <hr class="costura esq" />
+    <div class="faq-lista" id="faqLista">
+      <div class="faq-item">
+        <button class="faq-pergunta" aria-expanded="false">
+          <span>Como funciona a entrega?</span>
+          <span class="faq-icone" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-caixa">
+          <p class="faq-resposta">Mandamos pelos Correios pra qualquer canto do Brasil. Assim que o pedido é despachado, o código de rastreio chega direto no seu zap. 📦</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-pergunta" aria-expanded="false">
+          <span>Quais formas de pagamento?</span>
+          <span class="faq-icone" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-caixa">
+          <p class="faq-resposta">A gente combina tudo pelo WhatsApp: Pix ou cartão, do jeito que ficar melhor pra você. Sem burocracia, uai.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-pergunta" aria-expanded="false">
+          <span>Posso trocar se não servir?</span>
+          <span class="faq-icone" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-caixa">
+          <p class="faq-resposta">Pode, uai! É só chamar no zap que a gente resolve a troca sem dor de cabeça. 🤠</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-pergunta" aria-expanded="false">
+          <span>Quanto tempo demora pra chegar?</span>
+          <span class="faq-icone" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-caixa">
+          <p class="faq-resposta">Depende da região, mas a gente te fala o prazo certinho na hora do pedido. Papo reto, sem enrolação.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-pergunta" aria-expanded="false">
+          <span>Os produtos são originais?</span>
+          <span class="faq-icone" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-caixa">
+          <p class="faq-resposta">100% originais — nacional e importado. Aqui não tem réplica, não. Só marca arretada de verdade.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-pergunta" aria-expanded="false">
+          <span>Como sei meu tamanho?</span>
+          <span class="faq-icone" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-caixa">
+          <p class="faq-resposta">Chama a gente no zap que ajudamos com as medidas de cada peça. Ninguém compra às cegas por aqui.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CONTATO ══════════════════ -->
 <section id="contato">
-  <div class="container">
-    <div class="contato-inner">
-      <div class="s-label">Fale conosco</div>
-      <h2 class="s-title">Pronto para<br>Vestir Country?</h2>
-      <p>Manda uma mensagem no WhatsApp ou segue no Instagram para ver os lançamentos e sorteios em primeira mão.</p>
-      <div class="contato-actions">
-        <a href="https://api.whatsapp.com/send?phone=5535997193368&text=Opa%F0%9F%A4%A0Aqui%20%C3%A9%20a%20Ranch%20uai%0AMe%20conta%3A%20voc%C3%AA%20t%C3%A1%20procurando%20camisetas%2C%20cal%C3%A7as%20ou%20acess%C3%B3rios%20country%3F"
-           target="_blank" rel="noopener" class="btn-wa">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
-          WhatsApp
-        </a>
-        <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener" class="btn-ig">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          Instagram @ranch_uai
-        </a>
-      </div>
+  <div class="contato-caixa">
+    <p class="s-rotulo">Fala com a gente</p>
+    <h2 class="s-titulo">Bora vestir country?</h2>
+    <hr class="costura" />
+    <p>Manda um "opa" no WhatsApp ou segue a gente no Instagram pra ver lançamento e sorteio em primeira mão.</p>
+    <div class="contato-acoes">
+      <a href="https://api.whatsapp.com/send?phone=5535997193368&amp;text=Opa%F0%9F%A4%A0%20Vi%20o%20site%20da%20Ranch%20UAI%20e%20quero%20saber%20mais!"
+         target="_blank" rel="noopener" class="btn-zap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+        Chamar no WhatsApp
+      </a>
+      <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener" class="btn-insta">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @ranch_uai
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ───────────────────────────────────────────────────── -->
+</main>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
 <footer>
-  <p>© 2025 Ranch UAI – Moda Country &nbsp;·&nbsp;
-     <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener">@ranch_uai</a>
+  <p>© 2026 Ranch UAI — Moda Country · A marca do Home Cuiudo 🤠<br />
+    <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener">@ranch_uai</a> ·
+    <a href="https://api.whatsapp.com/send?phone=5535997193368" target="_blank" rel="noopener">WhatsApp</a>
   </p>
 </footer>
 
-<script>
-  // Nav scroll highlight
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.style.borderBottomColor = window.scrollY > 50 ? 'rgba(200,134,10,.3)' : '';
-  }, { passive: true });
+<!-- ══════════════════ FLUTUANTES ══════════════════ -->
+<!-- WhatsApp geral (esquerda) -->
+<a href="https://api.whatsapp.com/send?phone=5535997193368&amp;text=Opa%F0%9F%A4%A0%20Vi%20o%20site%20da%20Ranch%20UAI%20e%20quero%20saber%20mais!"
+   target="_blank" rel="noopener" class="flut-zap" aria-label="Falar com a Ranch UAI no WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+</a>
 
-  // Hamburger menu
-  const hamburger  = document.getElementById('hamburger');
-  const navLinks   = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('open');
-    hamburger.classList.toggle('open', open);
-    hamburger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-  });
-  function closeMenu() {
-    navLinks.classList.remove('open');
-    hamburger.classList.remove('open');
+<!-- Sacola (direita) -->
+<button class="flut-sacola" id="btnSacola" aria-label="Abrir sacola de pedidos">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1.5 13.5a1 1 0 01-1 1.1H5.5a1 1 0 01-1-1.1L6 7z"/><path d="M9 10V6a3 3 0 016 0v4"/></svg>
+  <span class="badge" id="badgeSacola">0</span>
+</button>
+
+<!-- ══════════════════ PAINEL DA SACOLA ══════════════════ -->
+<div class="veu" id="veu"></div>
+<aside class="sacola-painel" id="sacolaPainel" aria-label="Sacola de pedidos" aria-hidden="true">
+  <div class="sacola-topo">
+    <h2>🤠 Sua sacola</h2>
+    <button class="sacola-fechar" id="fecharSacola" aria-label="Fechar sacola">✕</button>
+  </div>
+  <div class="sacola-itens" id="sacolaItens"></div>
+  <div class="sacola-pe">
+    <div class="sacola-total">
+      <span class="rotulo">Total do pedido</span>
+      <span class="valor" id="sacolaTotal">R$ 0,00</span>
+    </div>
+    <a href="#" target="_blank" rel="noopener" class="btn-zap" id="btnFinalizar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      Finalizar pedido no WhatsApp
+    </a>
+  </div>
+</aside>
+
+<!-- ══════════════════ SCRIPTS ══════════════════ -->
+<!-- PapaParse (única biblioteca externa permitida) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ════════════════════════════════════════════════════════════
+     CONFIGURAÇÃO — >>> TROQUE AQUI <<<
+     Cole abaixo o link da sua Planilha Google publicada em CSV:
+     Arquivo → Compartilhar → Publicar na web → formato CSV
+     ════════════════════════════════════════════════════════════ */
+  const PLANILHA_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSObNE5dlaB6innFs3rYKbzPU0tProMvRPwAGUALSLyXVQLRSqX7lUVrIPSj_PEfP5XeLjGMssp_IAy/pub?gid=730765127&single=true&output=csv'; // >>> TROQUE AQUI <<<
+
+  const WHATSAPP = '5535997193368';
+  const LINK_ZAP_GERAL = 'https://api.whatsapp.com/send?phone=' + WHATSAPP +
+    '&text=' + encodeURIComponent('Opa🤠 Vi o site da Ranch UAI e quero saber mais!');
+
+  /* ─── Atalhos e utilitários ─────────────────────────────── */
+  const $ = (sel) => document.querySelector(sel);
+  const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Escapa HTML de dados vindos da planilha (segurança)
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
   }
 
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    });
+  // "R$ 129,90" → 129.9 (vírgula decimal do Brasil)
+  function parsePreco(str) {
+    const limpo = String(str || '').replace(/[^\d.,]/g, '');
+    if (!limpo) return 0;
+    const semMilhar = limpo.includes(',') ? limpo.replace(/\./g, '').replace(',', '.') : limpo;
+    const n = parseFloat(semMilhar);
+    return isNaN(n) ? 0 : n;
+  }
+
+  // 129.9 → "R$ 129,90"
+  function formataPreco(n) {
+    return 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // Normaliza texto: minúsculo e sem acento (pra busca e comparações)
+  function normaliza(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+
+  /* ════════════════ MENU HAMBÚRGUER ════════════════ */
+  const hamburguer = $('#hamburguer');
+  const navLinks = $('#navLinks');
+
+  function fechaMenu() {
+    navLinks.classList.remove('aberto');
+    hamburguer.classList.remove('aberto');
+    hamburguer.setAttribute('aria-expanded', 'false');
+    hamburguer.setAttribute('aria-label', 'Abrir menu');
+  }
+  hamburguer.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const aberto = navLinks.classList.toggle('aberto');
+    hamburguer.classList.toggle('aberto', aberto);
+    hamburguer.setAttribute('aria-expanded', String(aberto));
+    hamburguer.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+  });
+  navLinks.addEventListener('click', (e) => { if (e.target.closest('a')) fechaMenu(); });
+  document.addEventListener('click', (e) => {
+    if (navLinks.classList.contains('aberto') && !e.target.closest('.nav')) fechaMenu();
   });
 
-  // Reveal on scroll
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  /* ════════════════ PARALLAX DO HERO + BARRA DE PROGRESSO ════════════════
+     transform + requestAnimationFrame + listener passivo
+     (nunca background-attachment: fixed — quebra no iOS)  */
+  const heroFundo = $('#heroFundo');
+  const progresso = $('#progresso');
+  if (!reduzMovimento) {
+    let ultimoY = 0, agendado = false;
+    window.addEventListener('scroll', () => {
+      ultimoY = window.scrollY;
+      if (!agendado) {
+        agendado = true;
+        requestAnimationFrame(() => {
+          if (heroFundo) heroFundo.style.transform = 'translateY(' + (ultimoY * 0.35) + 'px)';
+          if (progresso) {
+            const rolavel = document.documentElement.scrollHeight - window.innerHeight;
+            progresso.style.transform = 'scaleX(' + (rolavel > 0 ? ultimoY / rolavel : 0) + ')';
+          }
+          agendado = false;
+        });
+      }
+    }, { passive: true });
+  }
+
+  /* ════════════════ REVEAL ON SCROLL ════════════════ */
+  if (!reduzMovimento && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entradas) => {
+      entradas.forEach((ent) => {
+        if (ent.isIntersecting) { ent.target.classList.add('visivel'); obs.unobserve(ent.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.surge').forEach((el) => obs.observe(el));
+  } else {
+    document.querySelectorAll('.surge').forEach((el) => el.classList.add('visivel'));
+  }
+
+  /* ════════════════ CONTADORES ANIMADOS (Sobre) ════════════════
+     Sobem de 0 até o valor quando entram na tela — uma vez só.
+     Com movimento reduzido: valores finais já estão no HTML.  */
+  if (!reduzMovimento && 'IntersectionObserver' in window) {
+    const obsNum = new IntersectionObserver((entradas) => {
+      entradas.forEach((ent) => {
+        if (!ent.isIntersecting) return;
+        obsNum.unobserve(ent.target);
+        const el = ent.target;
+        // separa prefixo, número e sufixo: "+1.2K" → "+" / 1.2 / "K"
+        const m = el.textContent.match(/^([^\d]*)([\d.]+)(.*)$/);
+        if (!m) return; // sem dígito (ex: 🤠) → fica parado
+        const prefixo = m[1], alvo = parseFloat(m[2]), sufixo = m[3];
+        const casas = (m[2].split('.')[1] || '').length;
+        const duracao = 1200, inicio = performance.now();
+        function passo(agora) {
+          const t = Math.min(1, (agora - inicio) / duracao);
+          const suave = 1 - Math.pow(1 - t, 3); // easeOutCubic
+          el.textContent = prefixo + (alvo * suave).toFixed(casas) + sufixo;
+          if (t < 1) requestAnimationFrame(passo);
+        }
+        requestAnimationFrame(passo);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.num-valor').forEach((el) => obsNum.observe(el));
+  }
+
+  /* ════════════════ FAQ (ACCORDION) ════════════════ */
+  const faqLista = $('#faqLista');
+  faqLista.addEventListener('click', (e) => {
+    const btn = e.target.closest('.faq-pergunta');
+    if (!btn) return;
+    const item = btn.closest('.faq-item');
+    const aberto = item.classList.toggle('aberto');
+    btn.setAttribute('aria-expanded', String(aberto));
+  });
+
+  /* ════════════════════════════════════════════════════════════
+     CATÁLOGO — carrega produtos da Planilha Google (CSV)
+     Colunas: nome | preco | categoria | tamanhos | imagem | estoque | disponivel
+     ════════════════════════════════════════════════════════════ */
+  const grade = $('#grade');
+  const filtrosEl = $('#filtros');
+  const buscaEl = $('#busca');
+
+  let PRODUTOS = [];          // lista final de produtos válidos
+  let categoriaAtiva = 'todos';
+  let termoBusca = '';
+
+  // ─── Skeleton enquanto o CSV baixa ───
+  function mostraSkeleton() {
+    let html = '';
+    for (let i = 0; i < 6; i++) {
+      html += '<div class="skeleton" aria-hidden="true">' +
+        '<div class="sk-foto sk-anim"></div>' +
+        '<div class="sk-linha sk-anim curta"></div>' +
+        '<div class="sk-linha sk-anim"></div>' +
+        '<div class="sk-btn sk-anim"></div>' +
+        '</div>';
+    }
+    grade.innerHTML = html;
+  }
+
+  // ─── Mensagem simpática quando algo dá errado ───
+  function mostraErro() {
+    grade.innerHTML =
+      '<div class="aviso">' +
+      '<p>Eita, uai! 🤠 Nosso catálogo deu uma cochilada…<br />Mas relaxa: chama no zap que a gente te mostra tudo por lá!</p>' +
+      '<a href="' + LINK_ZAP_GERAL + '" target="_blank" rel="noopener" class="btn-zap">Ver produtos pelo WhatsApp</a>' +
+      '</div>';
+    filtrosEl.innerHTML = '';
+  }
+
+  // ─── Interpreta uma linha do CSV num produto ───
+  function montaProduto(linha, i) {
+    // aceita cabeçalho com maiúsculas/acentos: normaliza as chaves
+    const dado = {};
+    Object.keys(linha).forEach((k) => { dado[normaliza(k)] = String(linha[k] == null ? '' : linha[k]).trim(); });
+
+    const nome = dado['nome'];
+    if (!nome) return null;                                   // linha vazia
+    if (normaliza(dado['disponivel']).startsWith('n')) return null; // disponivel = nao → some
+
+    const tamanhosBrutos = (dado['tamanhos'] || '')
+      .split(',').map((t) => t.trim()).filter(Boolean);
+    const semChips = tamanhosBrutos.length === 0 ||
+      (tamanhosBrutos.length === 1 && normaliza(tamanhosBrutos[0]) === 'unico');
+
+    const estoqueStr = dado['estoque'];
+    const estoque = estoqueStr === '' ? Infinity : Math.max(0, parseInt(estoqueStr, 10) || 0);
+
+    return {
+      id: i,
+      nome: nome,
+      precoNum: parsePreco(dado['preco']),
+      categoria: dado['categoria'] || 'Outros',
+      tamanhos: semChips ? [] : tamanhosBrutos,
+      imagem: dado['imagem'] || 'assets/logo.png',
+      estoque: estoque,
+      esgotado: estoque === 0
+    };
+  }
+
+  // ─── Monta os botões de filtro por categoria ───
+  function montaFiltros() {
+    const cats = [];
+    PRODUTOS.forEach((p) => { if (!cats.includes(p.categoria)) cats.push(p.categoria); });
+    let html = '<button class="filtro ativo" data-cat="todos" aria-pressed="true">Todos</button>';
+    cats.forEach((c) => {
+      html += '<button class="filtro" data-cat="' + esc(c) + '" aria-pressed="false">' + esc(c) + '</button>';
+    });
+    filtrosEl.innerHTML = html;
+  }
+
+  filtrosEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filtro');
+    if (!btn) return;
+    categoriaAtiva = btn.dataset.cat;
+    filtrosEl.querySelectorAll('.filtro').forEach((b) => {
+      const ativo = b === btn;
+      b.classList.toggle('ativo', ativo);
+      b.setAttribute('aria-pressed', String(ativo));
+    });
+    desenhaCatalogo();
+  });
+
+  buscaEl.addEventListener('input', () => {
+    termoBusca = normaliza(buscaEl.value);
+    desenhaCatalogo();
+  });
+
+  // ─── Desenha os cards (aplicando filtro + busca) ───
+  function desenhaCatalogo() {
+    const visiveis = PRODUTOS.filter((p) =>
+      (categoriaAtiva === 'todos' || p.categoria === categoriaAtiva) &&
+      (!termoBusca || normaliza(p.nome).includes(termoBusca))
+    );
+
+    if (visiveis.length === 0) {
+      grade.innerHTML =
+        '<div class="aviso">' +
+        '<p>Não achei nada com esse nome, uai! 🤠<br />Tenta outra palavra ou chama a gente no zap.</p>' +
+        '<a href="' + LINK_ZAP_GERAL + '" target="_blank" rel="noopener" class="btn-zap">Perguntar no WhatsApp</a>' +
+        '</div>';
+      return;
+    }
+
+    let html = '';
+    visiveis.forEach((p, idx) => {
+      const ultimas = !p.esgotado && p.estoque !== Infinity && p.estoque <= 2;
+      const precisaTamanho = p.tamanhos.length > 0;
+
+      // entrada em cascata: ~60ms por card, teto de 8 pra não atrasar quem rola rápido
+      const atraso = reduzMovimento ? '' : ' style="animation-delay:' + (Math.min(idx, 8) * 60) + 'ms"';
+
+      // selo de estoque
+      let selo = '';
+      if (p.esgotado)      selo = '<span class="selo selo-esgotado">Esgotado</span>';
+      else if (ultimas)    selo = '<span class="selo selo-ultimas">Últimas unidades</span>';
+
+      // chips de tamanho
+      let chips = '';
+      if (precisaTamanho) {
+        chips = '<div class="tamanhos" role="group" aria-label="Escolher tamanho">';
+        p.tamanhos.forEach((t) => {
+          chips += '<button class="chip" data-acao="tamanho" data-tam="' + esc(t) + '"' +
+            (p.esgotado ? ' disabled' : '') + ' aria-pressed="false">' + esc(t) + '</button>';
+        });
+        chips += '</div>';
+      }
+
+      // estado inicial do botão
+      let btn;
+      if (p.esgotado) {
+        btn = '<button class="card-btn morto" disabled>Esgotado</button>';
+      } else if (precisaTamanho) {
+        btn = '<button class="card-btn aguarda" data-acao="adicionar" disabled>Escolha o tamanho</button>';
+      } else {
+        btn = '<button class="card-btn" data-acao="adicionar">Adicionar à sacola</button>';
+      }
+
+      html +=
+        '<article class="card entra' + (p.esgotado ? ' esgotado' : '') + '" data-id="' + p.id + '"' + atraso + '>' +
+          '<div class="card-foto">' +
+            '<img src="' + esc(p.imagem) + '" alt="' + esc(p.nome) + '" loading="lazy" ' +
+              'onerror="this.onerror=null;this.src=\'assets/logo.png\'" />' +
+            selo +
+          '</div>' +
+          '<div class="card-corpo">' +
+            '<p class="card-cat">' + esc(p.categoria) + '</p>' +
+            '<h3 class="card-nome">' + esc(p.nome) + '</h3>' +
+            chips +
+            '<p class="card-preco">' + formataPreco(p.precoNum) + '</p>' +
+            btn +
+          '</div>' +
+        '</article>';
+    });
+    grade.innerHTML = html;
+  }
+
+  // ─── Interações do card: chips + adicionar (delegação) ───
+  grade.addEventListener('click', (e) => {
+    const cardEl = e.target.closest('.card');
+    if (!cardEl) return;
+    const produto = PRODUTOS.find((p) => p.id === Number(cardEl.dataset.id));
+    if (!produto || produto.esgotado) return;
+
+    // clicou num chip de tamanho
+    const chip = e.target.closest('[data-acao="tamanho"]');
+    if (chip) {
+      const jaMarcado = chip.classList.contains('marcado');
+      cardEl.querySelectorAll('.chip').forEach((c) => {
+        c.classList.remove('marcado');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      const btn = cardEl.querySelector('[data-acao="adicionar"]');
+      if (jaMarcado) {
+        // desmarcou: volta pro estado "escolha o tamanho"
+        delete cardEl.dataset.tam;
+        btn.disabled = true;
+        btn.classList.add('aguarda');
+        btn.textContent = 'Escolha o tamanho';
+      } else {
+        chip.classList.add('marcado');
+        chip.setAttribute('aria-pressed', 'true');
+        cardEl.dataset.tam = chip.dataset.tam;
+        btn.disabled = false;
+        btn.classList.remove('aguarda');
+        btn.textContent = 'Adicionar à sacola';
+      }
+      return;
+    }
+
+    // clicou em "Adicionar à sacola"
+    const btnAdd = e.target.closest('[data-acao="adicionar"]');
+    if (btnAdd && !btnAdd.disabled) {
+      const tamanho = produto.tamanhos.length > 0 ? (cardEl.dataset.tam || '') : '';
+      if (produto.tamanhos.length > 0 && !tamanho) return;
+      const ok = adicionaSacola(produto, tamanho);
+
+      // feedback visual: 1 segundo de "Adicionado ✓"
+      if (ok) {
+        btnAdd.textContent = 'Adicionado ✓';
+        btnAdd.classList.add('confirmado');
+      } else {
+        btnAdd.textContent = 'Estoque máximo!';
+      }
+      btnAdd.disabled = true;
+      setTimeout(() => {
+        btnAdd.classList.remove('confirmado');
+        btnAdd.textContent = 'Adicionar à sacola';
+        btnAdd.disabled = false;
+      }, 1000);
+    }
+  });
+
+  // ─── Carrega o CSV com PapaParse ───
+  function carregaCatalogo() {
+    mostraSkeleton();
+
+    // link ainda não configurado → já mostra o aviso amigável
+    if (!PLANILHA_CSV || PLANILHA_CSV.indexOf('COLE_AQUI') !== -1) {
+      mostraErro();
+      return;
+    }
+
+    Papa.parse(PLANILHA_CSV, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (resultado) => {
+        PRODUTOS = (resultado.data || [])
+          .map(montaProduto)
+          .filter(Boolean);
+        if (PRODUTOS.length === 0) { mostraErro(); return; }
+        montaFiltros();
+        desenhaCatalogo();
+      },
+      error: mostraErro
+    });
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SACOLA DE PEDIDOS — só em memória (sem localStorage)
+     ════════════════════════════════════════════════════════════ */
+  let SACOLA = []; // { nome, tamanho, precoNum, qtd, estoque }
+
+  const btnSacola = $('#btnSacola');
+  const badge = $('#badgeSacola');
+  const painel = $('#sacolaPainel');
+  const veu = $('#veu');
+  const itensEl = $('#sacolaItens');
+  const totalEl = $('#sacolaTotal');
+  const btnFinalizar = $('#btnFinalizar');
+
+  function totalItens() { return SACOLA.reduce((s, i) => s + i.qtd, 0); }
+  function totalValor() { return SACOLA.reduce((s, i) => s + i.qtd * i.precoNum, 0); }
+
+  // Adiciona item (mesmo produto + mesmo tamanho = mesma linha)
+  // Retorna false se bateu no limite de estoque
+  function adicionaSacola(produto, tamanho) {
+    const existente = SACOLA.find((i) => i.nome === produto.nome && i.tamanho === tamanho);
+    if (existente) {
+      if (existente.qtd >= existente.estoque) return false;
+      existente.qtd++;
+    } else {
+      if (produto.estoque < 1) return false;
+      SACOLA.push({
+        nome: produto.nome,
+        tamanho: tamanho,
+        precoNum: produto.precoNum,
+        qtd: 1,
+        estoque: produto.estoque
+      });
+    }
+    atualizaSacola(true);
+    return true;
+  }
+
+  // Redesenha badge, painel e link do WhatsApp
+  function atualizaSacola(pulsar) {
+    const qtd = totalItens();
+
+    // badge flutuante (só aparece com item dentro)
+    badge.textContent = qtd;
+    btnSacola.classList.toggle('visivel', qtd > 0);
+    if (pulsar && qtd > 0 && !reduzMovimento) {
+      badge.classList.remove('pulsa');
+      void badge.offsetWidth; // reinicia a animação
+      badge.classList.add('pulsa');
+    }
+    if (qtd === 0 && painel.classList.contains('aberto')) fechaSacola();
+
+    // lista de itens
+    if (SACOLA.length === 0) {
+      itensEl.innerHTML = '<p class="sacola-vazia">Sacola vazia, uai! 🤠<br />Escolhe umas peças aí no catálogo.</p>';
+    } else {
+      let html = '';
+      SACOLA.forEach((item, idx) => {
+        const noLimite = item.qtd >= item.estoque;
+        html +=
+          '<div class="item">' +
+            '<div class="item-info">' +
+              '<p class="item-nome">' + esc(item.nome) + '</p>' +
+              (item.tamanho ? '<p class="item-det">Tamanho: ' + esc(item.tamanho) + '</p>' : '') +
+              '<p class="item-preco">' + formataPreco(item.precoNum * item.qtd) + '</p>' +
+            '</div>' +
+            '<div class="item-qtd">' +
+              '<button class="qtd-btn" data-acao="menos" data-idx="' + idx + '" aria-label="Diminuir quantidade de ' + esc(item.nome) + '">−</button>' +
+              '<span class="qtd-num" aria-live="polite">' + item.qtd + '</span>' +
+              '<button class="qtd-btn" data-acao="mais" data-idx="' + idx + '"' + (noLimite ? ' disabled' : '') +
+                ' aria-label="Aumentar quantidade de ' + esc(item.nome) + '">+</button>' +
+            '</div>' +
+            '<button class="item-remover" data-acao="remover" data-idx="' + idx + '" aria-label="Remover ' + esc(item.nome) + ' da sacola">🗑</button>' +
+          '</div>';
+      });
+      itensEl.innerHTML = html;
+    }
+
+    // total + link do WhatsApp
+    totalEl.textContent = formataPreco(totalValor());
+    btnFinalizar.href = montaLinkPedido();
+  }
+
+  // Monta a mensagem final do pedido
+  function montaLinkPedido() {
+    if (SACOLA.length === 0) return LINK_ZAP_GERAL;
+    let msg = 'Opa🤠 Vi no site e quero fazer um pedido:\n\n';
+    SACOLA.forEach((item) => {
+      msg += item.qtd + 'x ' + item.nome +
+        (item.tamanho ? ' — Tam. ' + item.tamanho : '') +
+        ' — ' + formataPreco(item.precoNum * item.qtd) + '\n';
+    });
+    msg += '\nTotal: ' + formataPreco(totalValor());
+    return 'https://api.whatsapp.com/send?phone=' + WHATSAPP + '&text=' + encodeURIComponent(msg);
+  }
+
+  // +/− e remover (delegação no painel)
+  itensEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-acao]');
+    if (!btn) return;
+    const idx = Number(btn.dataset.idx);
+    const item = SACOLA[idx];
+    if (!item) return;
+
+    if (btn.dataset.acao === 'mais' && item.qtd < item.estoque) item.qtd++;
+    if (btn.dataset.acao === 'menos') {
+      item.qtd--;
+      if (item.qtd <= 0) SACOLA.splice(idx, 1);
+    }
+    if (btn.dataset.acao === 'remover') SACOLA.splice(idx, 1);
+    atualizaSacola(false);
+  });
+
+  // Abrir / fechar painel (com gestão de foco pra teclado/leitor de tela)
+  function abreSacola() {
+    painel.classList.add('aberto');
+    veu.classList.add('aberto');
+    painel.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden'; // trava o scroll de fundo
+    $('#fecharSacola').focus();              // foco vai pro botão de fechar
+  }
+  function fechaSacola() {
+    if (!painel.classList.contains('aberto')) return;
+    painel.classList.remove('aberto');
+    veu.classList.remove('aberto');
+    painel.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    btnSacola.focus();                       // devolve o foco pro botão da sacola
+  }
+  btnSacola.addEventListener('click', abreSacola);
+  $('#fecharSacola').addEventListener('click', fechaSacola);
+  veu.addEventListener('click', fechaSacola); // toca fora → fecha
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechaSacola(); });
+
+  /* ════════════════ INICIALIZAÇÃO ════════════════ */
+  atualizaSacola(false);
+  carregaCatalogo();
+})();
 </script>
 </body>
 </html>
