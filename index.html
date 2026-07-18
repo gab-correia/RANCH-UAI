@@ -10,13 +10,17 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Ranch UAI – Moda Country" />
   <meta property="og:description" content="A marca do Home Cuiudo. Moda country nacional e importada — pedido rápido pelo WhatsApp, envio pra todo o Brasil." />
-  <meta property="og:image" content="https://ranchuai.me/assets/logo.png" />
+  <meta property="og:image" content="https://ranchuai.me/assets/og-cover.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://ranchuai.me/" />
   <meta property="og:locale" content="pt_BR" />
   <meta name="theme-color" content="#0a0a0a" />
 
-  <link rel="icon" href="assets/logo.png" type="image/png" />
-  <link rel="apple-touch-icon" href="assets/logo.png" />
+  <!-- Favicons dedicados por tamanho (?v=2 força o navegador a trocar o ícone antigo) -->
+  <link rel="icon" href="assets/favicon-32.png?v=2" sizes="32x32" type="image/png" />
+  <link rel="icon" href="assets/favicon-192.png?v=2" sizes="192x192" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-180.png?v=2" />
 
   <!-- Dados estruturados: loja de roupas (SEO) -->
   <script type="application/ld+json">
@@ -36,7 +40,7 @@
   <!-- ══════════ FONTES (preconnect + swap) ══════════ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     /* ════════════════════════════════════════════════════════════
@@ -57,8 +61,8 @@
       --borda:    #2b2318;
       --verde:    #25d366;   /* WhatsApp */
       --raio:     12px;
-      --fonte-rodeio: 'Rye', 'Bebas Neue', serif;
-      --fonte-titulo: 'Bebas Neue', sans-serif;
+      /* Serifada clássica que ecoa o lettering da logo (heritage premium) */
+      --fonte-display: 'Lora', Georgia, serif;
     }
 
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -106,9 +110,9 @@
     /* ─── Divisor "costura de sela" ─────────────────────────── */
     .costura {
       border: none;
-      border-top: 3px dashed rgba(200,134,10,.4);
-      max-width: 180px;
-      margin: 1.1rem auto 1.6rem;
+      border-top: 2px dashed rgba(200,134,10,.55);
+      max-width: 72px;
+      margin: 1rem auto 1.5rem;
     }
     .costura.esq { margin-left: 0; }
 
@@ -129,10 +133,12 @@
       display: flex; align-items: center; gap: .6rem;
       text-decoration: none; flex-shrink: 0; min-height: 44px;
     }
-    .nav-marca img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+    /* caveira longhorn solta ao lado do nome (larga e baixa, sem moldura) */
+    .nav-marca img { height: 24px; width: auto; }
     .nav-marca-txt {
-      font-family: var(--fonte-titulo);
-      font-size: 1.3rem; letter-spacing: .09em; color: var(--creme); line-height: 1;
+      font-family: var(--fonte-display);
+      font-weight: 700;
+      font-size: 1.05rem; letter-spacing: .03em; color: var(--creme); line-height: 1;
     }
     .nav-marca-txt span { color: var(--dourado); }
 
@@ -142,7 +148,7 @@
       flex-direction: column;
       position: absolute; top: 60px; left: 0; right: 0;
       background: rgba(10,10,10,.98);
-      border-bottom: 2px dashed rgba(200,134,10,.35);
+      border-bottom: 1px solid rgba(200,134,10,.35);
       padding: .5rem 1.25rem 1.25rem;
     }
     .nav-links.aberto { display: flex; }
@@ -182,7 +188,7 @@
       align-items: center; justify-content: center;
       text-align: center;
       overflow: hidden;
-      border-bottom: 3px dashed rgba(200,134,10,.3);
+      border-bottom: 1px solid var(--borda);
     }
     /* camada de parallax: brilho dourado + trama de madeira sutil */
     .hero-fundo {
@@ -197,10 +203,10 @@
     .hero-conteudo { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 420px; }
 
     .hero-logo {
-      width: clamp(120px, 34vw, 160px); height: clamp(120px, 34vw, 160px);
+      width: clamp(140px, 40vw, 190px); height: clamp(140px, 40vw, 190px);
       border-radius: 50%; object-fit: cover;
-      border: 3px solid rgba(200,134,10,.5);
-      box-shadow: 0 0 42px rgba(200,134,10,.35);
+      /* o selo já tem anel próprio — só uma luz dourada bem sutil */
+      box-shadow: 0 12px 44px rgba(0,0,0,.55), 0 0 60px rgba(200,134,10,.18);
       margin-bottom: 1.4rem;
     }
     .hero-selo {
@@ -212,16 +218,17 @@
       margin-bottom: 1rem;
     }
     .hero h1 {
-      font-family: var(--fonte-rodeio);
-      font-size: clamp(2.6rem, 13vw, 5rem);
-      line-height: 1.02; letter-spacing: .01em;
-      text-shadow: 0 4px 0 rgba(0,0,0,.6);
+      font-family: var(--fonte-display);
+      font-weight: 700;
+      font-size: clamp(2.2rem, 10vw, 4rem);
+      line-height: 1.08; letter-spacing: .01em;
     }
     .hero h1 em { color: var(--dourado); font-style: normal; }
     .hero-slogan {
-      font-family: var(--fonte-titulo);
-      font-size: clamp(1.15rem, 5vw, 1.6rem);
-      letter-spacing: .12em; color: var(--creme);
+      font-family: var(--fonte-display);
+      font-style: italic; font-weight: 500;
+      font-size: clamp(1.05rem, 4.2vw, 1.35rem);
+      letter-spacing: .02em; color: var(--creme);
       margin-top: .5rem;
     }
     .hero-sub {
@@ -267,13 +274,14 @@
       color: var(--dourado); margin-bottom: .4rem;
     }
     .s-titulo {
-      font-family: var(--fonte-rodeio);
-      font-size: clamp(1.7rem, 7vw, 3rem);
-      line-height: 1.1;
+      font-family: var(--fonte-display);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+      line-height: 1.15;
     }
 
     /* ════════════════ CATÁLOGO ════════════════ */
-    #catalogo { background: var(--preto2); border-bottom: 3px dashed rgba(200,134,10,.25); }
+    #catalogo { background: var(--preto2); border-bottom: 1px solid var(--borda); }
 
     .busca-caixa {
       display: flex; align-items: center; gap: .6rem;
@@ -377,9 +385,9 @@
     .chip:disabled { opacity: .4; cursor: not-allowed; }
 
     .card-preco {
-      font-family: var(--fonte-titulo);
-      font-size: clamp(1.4rem, 5.5vw, 1.7rem);
-      color: var(--dourado2); letter-spacing: .03em;
+      font-weight: 800;
+      font-size: clamp(1.1rem, 4.2vw, 1.3rem);
+      color: var(--dourado2);
       margin-top: auto; /* empurra preço + botão pro pé do card */
     }
 
@@ -394,7 +402,11 @@
     .card-btn:active:not(:disabled) { transform: scale(.97); }
     .card-btn:hover:not(:disabled)  { background: var(--dourado2); }
     .card-btn.aguarda { background: #3a3428; color: var(--cinza); cursor: not-allowed; }
-    .card-btn.confirmado { background: var(--verde); color: #fff; }
+    /* confirmação na língua da marca: fundo escuro + anel dourado, tipo ferro de marcar */
+    .card-btn.confirmado {
+      background: var(--preto2); color: var(--dourado2);
+      box-shadow: inset 0 0 0 1.5px var(--dourado);
+    }
     .card-btn:disabled.morto { background: #2a2a2a; color: #777; cursor: not-allowed; }
 
     /* Skeleton de carregamento */
@@ -437,6 +449,20 @@
     .btn-zap:active { transform: scale(.97); }
     .btn-zap:hover  { box-shadow: 0 8px 24px rgba(37,211,102,.35); }
 
+    /* Botão dourado da marca (CTAs de conversa — o verde fica só pro fechamento) */
+    .btn-ouro {
+      display: flex; align-items: center; justify-content: center; gap: .55rem;
+      background: var(--dourado); color: #000;
+      min-height: 52px; padding: .9rem 1.4rem;
+      border: none; border-radius: 10px;
+      font-size: 1.05rem; font-weight: 800; text-decoration: none;
+      transition: transform .15s, background .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-ouro:active { transform: scale(.97); }
+    .btn-ouro:hover  { background: var(--dourado2); }
+    .aviso .btn-ouro { max-width: 320px; margin: 0 auto; }
+
     /* ════════════════ MARCAS ════════════════ */
     #marcas { background: var(--preto); }
     .marcas-grade { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: 1.5rem; }
@@ -450,7 +476,7 @@
       transition: border-color .2s, transform .2s;
     }
     .marca:hover { border-color: var(--dourado); transform: translateY(-3px); }
-    .marca-nome { font-family: var(--fonte-titulo); font-size: 1.5rem; letter-spacing: .09em; }
+    .marca-nome { font-weight: 800; font-size: 1rem; letter-spacing: .14em; }
     .marca-sub  { font-size: .64rem; color: var(--cinza); letter-spacing: .14em; text-transform: uppercase; margin-top: .15rem; }
 
     /* Stagger no reveal das marcas (cascata sutil) */
@@ -460,7 +486,7 @@
     .marcas-grade .surge:nth-child(5) { transition-delay: .28s; }
 
     /* ════════════════ COMO COMPRAR ════════════════ */
-    #como-comprar { background: var(--preto2); border-top: 3px dashed rgba(200,134,10,.25); border-bottom: 3px dashed rgba(200,134,10,.25); }
+    #como-comprar { background: var(--preto2); border-top: 1px solid var(--borda); border-bottom: 1px solid var(--borda); }
     .passos { display: grid; gap: .8rem; margin-top: 1.5rem; }
     .passo {
       background: var(--preto3); border: 1px solid var(--borda);
@@ -469,8 +495,9 @@
       display: flex; gap: 1rem; align-items: flex-start;
     }
     .passo-num {
-      font-family: var(--fonte-rodeio);
-      font-size: 2rem; color: var(--dourado); line-height: 1;
+      font-family: var(--fonte-display);
+      font-weight: 700;
+      font-size: 1.6rem; color: var(--dourado); line-height: 1;
       flex-shrink: 0;
     }
     .passo-titulo { font-weight: 800; font-size: 1.02rem; margin-bottom: .2rem; }
@@ -485,11 +512,11 @@
       background: var(--preto3); border: 1px solid var(--borda);
       border-radius: var(--raio); padding: 1.15rem .75rem; text-align: center;
     }
-    .num-valor { display: block; font-family: var(--fonte-titulo); font-size: 2.1rem; color: var(--dourado); line-height: 1; }
+    .num-valor { display: block; font-family: var(--fonte-display); font-weight: 700; font-size: 1.8rem; color: var(--dourado); line-height: 1; }
     .num-rotulo { display: block; font-size: .68rem; color: var(--cinza); text-transform: uppercase; letter-spacing: .1em; margin-top: .3rem; }
 
     /* ════════════════ LOOKBOOK ════════════════ */
-    #lookbook { background: var(--preto2); border-top: 3px dashed rgba(200,134,10,.25); }
+    #lookbook { background: var(--preto2); border-top: 1px solid var(--borda); }
     .look-grade { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1.5rem; }
     .look-grade img {
       width: 100%; aspect-ratio: 3/4; object-fit: cover;
@@ -501,19 +528,20 @@
     .look-grade img:hover { transform: scale(1.02); }
 
     /* ════════════════ DIFERENCIAIS ════════════════ */
-    #diferenciais { background: var(--preto); border-top: 3px dashed rgba(200,134,10,.25); }
+    #diferenciais { background: var(--preto); border-top: 1px solid var(--borda); }
     .dif-grade { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: 1.5rem; }
     .dif {
       background: var(--preto3); border: 1px solid var(--borda);
       border-top: 3px solid var(--dourado);
       border-radius: var(--raio); padding: 1.3rem 1rem;
     }
-    .dif-icone  { font-size: 1.7rem; margin-bottom: .6rem; }
+    .dif-icone  { color: var(--dourado); margin-bottom: .7rem; }
+    .dif-icone svg { width: 26px; height: 26px; }
     .dif-titulo { font-weight: 800; font-size: .98rem; margin-bottom: .3rem; line-height: 1.25; }
     .dif-desc   { font-size: .82rem; color: var(--cinza); }
 
     /* ════════════════ FAQ ════════════════ */
-    #faq { background: var(--preto2); border-top: 3px dashed rgba(200,134,10,.25); }
+    #faq { background: var(--preto2); border-top: 1px solid var(--borda); }
     .faq-lista { display: grid; gap: .7rem; margin-top: 1.5rem; max-width: 760px; }
     .faq-item {
       background: var(--preto3); border: 1px solid var(--borda);
@@ -550,7 +578,7 @@
     .faq-item.aberto .faq-resposta { padding-bottom: 1rem; }
 
     /* ════════════════ CONTATO + FOOTER ════════════════ */
-    #contato { background: var(--preto2); text-align: center; border-top: 3px dashed rgba(200,134,10,.25); }
+    #contato { background: var(--preto2); text-align: center; border-top: 1px solid var(--borda); }
     .contato-caixa { max-width: 460px; margin: 0 auto; }
     .contato-caixa > p { color: var(--cinza); margin-bottom: 1.6rem; }
     .contato-acoes { display: flex; flex-direction: column; gap: .8rem; }
@@ -602,11 +630,11 @@
     .flut-sacola .badge {
       position: absolute; top: -4px; right: -4px;
       min-width: 24px; height: 24px; padding: 0 6px;
-      background: #d3302f; color: #fff;
+      background: var(--preto); color: var(--creme);
       border-radius: 100px;
       font-size: .8rem; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
-      border: 2px solid var(--preto);
+      border: 2px solid var(--dourado);
     }
     .flut-sacola .badge.pulsa { animation: pulsa .45s ease; }
     @keyframes pulsa {
@@ -640,9 +668,9 @@
     .sacola-topo {
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 1.25rem .75rem;
-      border-bottom: 2px dashed rgba(200,134,10,.3);
+      border-bottom: 1px solid var(--borda);
     }
-    .sacola-topo h2 { font-family: var(--fonte-titulo); font-size: 1.5rem; letter-spacing: .06em; }
+    .sacola-topo h2 { font-family: var(--fonte-display); font-weight: 700; font-size: 1.2rem; }
     .sacola-fechar {
       background: none; border: none; color: var(--creme);
       min-width: 44px; min-height: 44px;
@@ -661,7 +689,7 @@
     .item-info { flex: 1; min-width: 0; }
     .item-nome { font-weight: 700; font-size: .92rem; line-height: 1.3; }
     .item-det  { font-size: .8rem; color: var(--cinza); margin-top: .1rem; }
-    .item-preco { font-family: var(--fonte-titulo); font-size: 1.15rem; color: var(--dourado2); margin-top: .15rem; }
+    .item-preco { font-weight: 800; font-size: .95rem; color: var(--dourado2); margin-top: .15rem; }
 
     .item-qtd { display: flex; align-items: center; gap: .15rem; flex-shrink: 0; }
     .qtd-btn {
@@ -676,21 +704,22 @@
 
     .item-remover {
       background: none; border: none; color: var(--cinza);
-      min-width: 42px; min-height: 42px; font-size: 1.15rem;
+      min-width: 42px; min-height: 42px;
+      display: flex; align-items: center; justify-content: center;
       -webkit-tap-highlight-color: transparent;
     }
     .item-remover:hover { color: #e05555; }
 
     .sacola-pe {
       padding: 1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
-      border-top: 2px dashed rgba(200,134,10,.3);
+      border-top: 1px solid var(--borda);
     }
     .sacola-total {
       display: flex; justify-content: space-between; align-items: baseline;
       margin-bottom: .85rem;
     }
     .sacola-total .rotulo { font-size: .95rem; color: var(--cinza); }
-    .sacola-total .valor  { font-family: var(--fonte-titulo); font-size: 1.9rem; color: var(--dourado2); }
+    .sacola-total .valor  { font-weight: 800; font-size: 1.45rem; color: var(--dourado2); }
     .sacola-pe .btn-zap { width: 100%; min-height: 56px; font-size: 1.1rem; }
 
     /* ════════════════ REVEAL ON SCROLL ════════════════ */
@@ -761,11 +790,19 @@
 <!-- Barra de progresso do scroll -->
 <div class="progresso" id="progresso" aria-hidden="true"></div>
 
+<!-- Sprite de ícones (definido uma vez, usado em toda a página) -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="ic-zap" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+  </symbol>
+</svg>
+
 <!-- ══════════════════ NAV FIXA ══════════════════ -->
 <header>
   <nav class="nav" aria-label="Navegação principal">
     <a href="#inicio" class="nav-marca" aria-label="Ranch UAI — voltar ao início">
-      <img src="assets/logo.png" alt="Logo Ranch UAI — crânio de boi longhorn" />
+      <img src="assets/caveira.png" alt="" />
       <span class="nav-marca-txt">Ranch <span>UAI</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -788,7 +825,7 @@
   <div class="hero-fundo" id="heroFundo" aria-hidden="true"></div>
   <div class="hero-conteudo">
     <img src="assets/logo.png" alt="Logo Ranch UAI" class="hero-logo" />
-    <p class="hero-selo">🤠 Moda Country · Nacional &amp; Importado</p>
+    <p class="hero-selo">Moda Country · Nacional &amp; Importado</p>
     <h1>Ranch <em>UAI</em></h1>
     <p class="hero-slogan">A marca do Home Cuiudo</p>
     <p class="hero-sub">Roupa boa, preço justo e entrega no Brasil inteiro. Escolheu, pediu no zap, chegou. Simples assim, uai.</p>
@@ -844,21 +881,21 @@
       <div class="passo surge">
         <div class="passo-num" aria-hidden="true">1</div>
         <div>
-          <p class="passo-titulo">👕 Escolha a peça</p>
+          <p class="passo-titulo">Escolha a peça</p>
           <p class="passo-desc">Passeia pelo catálogo, marca o tamanho e joga na sacola. Rapidinho.</p>
         </div>
       </div>
       <div class="passo surge">
         <div class="passo-num" aria-hidden="true">2</div>
         <div>
-          <p class="passo-titulo">💬 Finalize no WhatsApp</p>
+          <p class="passo-titulo">Finalize no WhatsApp</p>
           <p class="passo-desc">A sacola monta a mensagem prontinha. É só mandar que a gente responde na hora.</p>
         </div>
       </div>
       <div class="passo surge">
         <div class="passo-num" aria-hidden="true">3</div>
         <div>
-          <p class="passo-titulo">📦 Receba em casa</p>
+          <p class="passo-titulo">Receba em casa</p>
           <p class="passo-desc">Enviamos pra todo o Brasil. Da roça pra porteira da sua casa, uai.</p>
         </div>
       </div>
@@ -875,13 +912,13 @@
       <hr class="costura esq" />
       <p>A <strong>Ranch UAI</strong> nasceu do jeito certo: do gosto pela vida na roça, pelo rodeio e pelo modão de viola. Aqui não tem frescura — tem roupa country <strong>de verdade</strong>, nacional e importada.</p>
       <p>Trabalhamos com as marcas que o povo do agro respeita: <strong>Ariat, TXC, TUFF, Cinch e King Farm</strong>. Do boné ao cinto, da camiseta à calça — tudo pro seu estilo.</p>
-      <p>Atendimento no <strong>WhatsApp</strong>, papo reto e <strong>envio pra todo o Brasil</strong>. Chega junto! 🤠</p>
+      <p>Atendimento no <strong>WhatsApp</strong>, papo reto e <strong>envio pra todo o Brasil</strong>. Chega junto.</p>
     </div>
     <div class="sobre-numeros">
       <div class="num-card surge"><span class="num-valor">+1.2K</span><span class="num-rotulo">Seguidores</span></div>
       <div class="num-card surge"><span class="num-valor">5</span><span class="num-rotulo">Marcas premium</span></div>
       <div class="num-card surge"><span class="num-valor">100%</span><span class="num-rotulo">Brasil atendido</span></div>
-      <div class="num-card surge"><span class="num-valor">🤠</span><span class="num-rotulo">Home Cuiudo</span></div>
+      <div class="num-card surge"><span class="num-valor">UAI</span><span class="num-rotulo">Home Cuiudo</span></div>
     </div>
   </div>
 </section>
@@ -909,22 +946,30 @@
     <hr class="costura esq" />
     <div class="dif-grade">
       <div class="dif surge">
-        <div class="dif-icone" aria-hidden="true">🇧🇷🇺🇸</div>
+        <div class="dif-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
         <p class="dif-titulo">Nacional &amp; Importado</p>
         <p class="dif-desc">O melhor do country do Brasil e dos EUA, tudo num lugar só.</p>
       </div>
       <div class="dif surge">
-        <div class="dif-icone" aria-hidden="true">🚚</div>
+        <div class="dif-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
         <p class="dif-titulo">Envio pra todo o Brasil</p>
         <p class="dif-desc">Comprou, a gente despacha. Chega na sua porteira em qualquer canto.</p>
       </div>
       <div class="dif surge">
-        <div class="dif-icone" aria-hidden="true">💬</div>
+        <div class="dif-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
         <p class="dif-titulo">Atendimento no WhatsApp</p>
         <p class="dif-desc">Papo reto, sem robô enrolando. Tira a dúvida e fecha o pedido na hora.</p>
       </div>
       <div class="dif surge">
-        <div class="dif-icone" aria-hidden="true">⭐</div>
+        <div class="dif-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
         <p class="dif-titulo">Clientes satisfeitos</p>
         <p class="dif-desc">Confere os destaques "Clientes" e "Envios" lá no nosso Instagram.</p>
       </div>
@@ -945,7 +990,7 @@
           <span class="faq-icone" aria-hidden="true">+</span>
         </button>
         <div class="faq-caixa">
-          <p class="faq-resposta">Mandamos pelos Correios pra qualquer canto do Brasil. Assim que o pedido é despachado, o código de rastreio chega direto no seu zap. 📦</p>
+          <p class="faq-resposta">Mandamos pelos Correios pra qualquer canto do Brasil. Assim que o pedido é despachado, o código de rastreio chega direto no seu zap.</p>
         </div>
       </div>
       <div class="faq-item">
@@ -963,7 +1008,7 @@
           <span class="faq-icone" aria-hidden="true">+</span>
         </button>
         <div class="faq-caixa">
-          <p class="faq-resposta">Pode, uai! É só chamar no zap que a gente resolve a troca sem dor de cabeça. 🤠</p>
+          <p class="faq-resposta">Pode, uai! É só chamar no zap que a gente resolve a troca sem dor de cabeça.</p>
         </div>
       </div>
       <div class="faq-item">
@@ -1006,8 +1051,8 @@
     <p>Manda um "opa" no WhatsApp ou segue a gente no Instagram pra ver lançamento e sorteio em primeira mão.</p>
     <div class="contato-acoes">
       <a href="https://api.whatsapp.com/send?phone=5535997193368&amp;text=Opa%F0%9F%A4%A0%20Vi%20o%20site%20da%20Ranch%20UAI%20e%20quero%20saber%20mais!"
-         target="_blank" rel="noopener" class="btn-zap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+         target="_blank" rel="noopener" class="btn-ouro">
+        <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#ic-zap"/></svg>
         Chamar no WhatsApp
       </a>
       <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener" class="btn-insta">
@@ -1022,7 +1067,7 @@
 
 <!-- ══════════════════ FOOTER ══════════════════ -->
 <footer>
-  <p>© 2026 Ranch UAI — Moda Country · A marca do Home Cuiudo 🤠<br />
+  <p>© 2026 Ranch UAI — Moda Country · A marca do Home Cuiudo<br />
     <a href="https://www.instagram.com/ranch_uai/" target="_blank" rel="noopener">@ranch_uai</a> ·
     <a href="https://api.whatsapp.com/send?phone=5535997193368" target="_blank" rel="noopener">WhatsApp</a>
   </p>
@@ -1032,7 +1077,7 @@
 <!-- WhatsApp geral (esquerda) -->
 <a href="https://api.whatsapp.com/send?phone=5535997193368&amp;text=Opa%F0%9F%A4%A0%20Vi%20o%20site%20da%20Ranch%20UAI%20e%20quero%20saber%20mais!"
    target="_blank" rel="noopener" class="flut-zap" aria-label="Falar com a Ranch UAI no WhatsApp">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+  <svg width="28" height="28" fill="currentColor" aria-hidden="true"><use href="#ic-zap"/></svg>
 </a>
 
 <!-- Sacola (direita) -->
@@ -1045,7 +1090,7 @@
 <div class="veu" id="veu"></div>
 <aside class="sacola-painel" id="sacolaPainel" aria-label="Sacola de pedidos" aria-hidden="true">
   <div class="sacola-topo">
-    <h2>🤠 Sua sacola</h2>
+    <h2>Sua sacola</h2>
     <button class="sacola-fechar" id="fecharSacola" aria-label="Fechar sacola">✕</button>
   </div>
   <div class="sacola-itens" id="sacolaItens"></div>
@@ -1055,7 +1100,7 @@
       <span class="valor" id="sacolaTotal">R$ 0,00</span>
     </div>
     <a href="#" target="_blank" rel="noopener" class="btn-zap" id="btnFinalizar">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.847L.072 23.927l6.232-1.437A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.004-1.373l-.358-.213-3.7.853.884-3.601-.234-.37A9.778 9.778 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      <svg width="20" height="20" fill="currentColor" aria-hidden="true"><use href="#ic-zap"/></svg>
       Finalizar pedido no WhatsApp
     </a>
   </div>
@@ -1233,8 +1278,8 @@
   function mostraErro() {
     grade.innerHTML =
       '<div class="aviso">' +
-      '<p>Eita, uai! 🤠 Nosso catálogo deu uma cochilada…<br />Mas relaxa: chama no zap que a gente te mostra tudo por lá!</p>' +
-      '<a href="' + LINK_ZAP_GERAL + '" target="_blank" rel="noopener" class="btn-zap">Ver produtos pelo WhatsApp</a>' +
+      '<p>Eita, uai! Nosso catálogo deu uma cochilada…<br />Mas relaxa: chama no zap que a gente te mostra tudo por lá!</p>' +
+      '<a href="' + LINK_ZAP_GERAL + '" target="_blank" rel="noopener" class="btn-ouro">Ver produtos pelo WhatsApp</a>' +
       '</div>';
     filtrosEl.innerHTML = '';
   }
@@ -1307,8 +1352,8 @@
     if (visiveis.length === 0) {
       grade.innerHTML =
         '<div class="aviso">' +
-        '<p>Não achei nada com esse nome, uai! 🤠<br />Tenta outra palavra ou chama a gente no zap.</p>' +
-        '<a href="' + LINK_ZAP_GERAL + '" target="_blank" rel="noopener" class="btn-zap">Perguntar no WhatsApp</a>' +
+        '<p>Não achei nada com esse nome, uai!<br />Tenta outra palavra ou chama a gente no zap.</p>' +
+        '<a href="' + LINK_ZAP_GERAL + '" target="_blank" rel="noopener" class="btn-ouro">Perguntar no WhatsApp</a>' +
         '</div>';
       return;
     }
@@ -1501,7 +1546,7 @@
 
     // lista de itens
     if (SACOLA.length === 0) {
-      itensEl.innerHTML = '<p class="sacola-vazia">Sacola vazia, uai! 🤠<br />Escolhe umas peças aí no catálogo.</p>';
+      itensEl.innerHTML = '<p class="sacola-vazia">Sacola vazia, uai!<br />Escolhe umas peças aí no catálogo.</p>';
     } else {
       let html = '';
       SACOLA.forEach((item, idx) => {
@@ -1519,7 +1564,9 @@
               '<button class="qtd-btn" data-acao="mais" data-idx="' + idx + '"' + (noLimite ? ' disabled' : '') +
                 ' aria-label="Aumentar quantidade de ' + esc(item.nome) + '">+</button>' +
             '</div>' +
-            '<button class="item-remover" data-acao="remover" data-idx="' + idx + '" aria-label="Remover ' + esc(item.nome) + ' da sacola">🗑</button>' +
+            '<button class="item-remover" data-acao="remover" data-idx="' + idx + '" aria-label="Remover ' + esc(item.nome) + ' da sacola">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>' +
+            '</button>' +
           '</div>';
       });
       itensEl.innerHTML = html;
