@@ -1308,10 +1308,20 @@
       precoNum: parsePreco(dado['preco']),
       categoria: dado['categoria'] || 'Outros',
       tamanhos: semChips ? [] : tamanhosBrutos,
-      imagem: dado['imagem'] || 'assets/logo.png',
+      imagem: normalizaImagem(dado['imagem']),
       estoque: estoque,
       esgotado: estoque === 0
     };
+  }
+
+  // Completa o https:// quando o link da planilha vem sem protocolo
+  // (ex.: "i.imghippo.com/foto.jpg"); caminhos locais como "assets/..." ficam como estão
+  function normalizaImagem(url) {
+    url = (url || '').trim();
+    if (!url) return 'assets/logo.png';
+    if (/^https?:\/\//i.test(url)) return url;
+    if (url.indexOf('assets/') === 0) return url;
+    return 'https://' + url;
   }
 
   // ─── Monta os botões de filtro por categoria ───
