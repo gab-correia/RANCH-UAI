@@ -1118,7 +1118,7 @@
      Cole abaixo o link da sua Planilha Google publicada em CSV:
      Arquivo → Compartilhar → Publicar na web → formato CSV
      ════════════════════════════════════════════════════════════ */
-  const PLANILHA_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSObNE5dlaB6innFs3rYKbzPU0tProMvRPwAGUALSLyXVQLRSqX7lUVrIPSj_PEfP5XeLjGMssp_IAy/pub?gid=730765127&single=true&output=csv'; // >>> TROQUE AQUI <<<
+  const PLANILHA_CSV = 'https://docs.google.com/spreadsheets/d/1GSgJy5ZG4Z2q_BGk-BFy6Wlmuhc57a68eI1uo-2k-RI/gviz/tq?tqx=out:csv&gid=730765127'; // >>> TROQUE AQUI <<<
 
   const WHATSAPP = '5535997193368';
   const LINK_ZAP_GERAL = 'https://api.whatsapp.com/send?phone=' + WHATSAPP +
@@ -1477,7 +1477,7 @@
       return;
     }
 
-    Papa.parse(PLANILHA_CSV, {
+    Papa.parse(PLANILHA_CSV + '&t=' + Date.now(), {
       download: true,
       header: true,
       skipEmptyLines: true,
